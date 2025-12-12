@@ -1,3 +1,1 @@
-#!/bin/bash
-IMAGE="assemblex"
-docker build -t ${IMAGE} .
+../../../scripts/build.sh
