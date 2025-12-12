@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+import os
+
+def main():
+    print("Welcome to the Very Opinionated Shell Executor: We don't like cats or flags! 😈")
+    print("Feel free to run *almost* anything. We totally promise it's safe! 😉")
+
+    user_input = input("Enter your command: ").strip()
+
+    # Check for forbidden words
+    if "flag" in user_input.lower() or "cat" in user_input.lower():
+        print("Nice try, hacker! But no sneaky business today. 😜")
+        exit(1)
+
+    print(f"Executing: {user_input} ... Good luck! 🚀")
+    os.system(user_input)
+
+    print("Execution finished! Hopefully, nothing exploded. 💥")
+
+if __name__ == "__main__":
+    main()

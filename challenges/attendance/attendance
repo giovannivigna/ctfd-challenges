@@ -1,0 +1,11 @@
+service attendance
+{
+    socket_type = stream
+    protocol    = tcp
+    wait        = no
+    user        = attendance
+    bind        = 0.0.0.0
+    server      = /opt/challenges/attendance/run.sh
+    port        = 5001
+    type        = UNLISTED
+}

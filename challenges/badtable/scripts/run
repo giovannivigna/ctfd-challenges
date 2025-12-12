@@ -1,0 +1,4 @@
+#!/bin/bash
+IMAGE="badtable"
+PORT=1104
+docker run -d --cap-add=SYS_PTRACE -p ${PORT}:${PORT} ${IMAGE}

@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+from pwn import *
+import subprocess
+import os
+import tempfile
+
+def sandbox():
+    """Sets up a simple seccomp filter to restrict syscalls."""
+    import seccomp
+    flt = seccomp.SyscallFilter(seccomp.ALLOW)
+    restricted_syscalls = ["execve", "openat", "unlink", "unlinkat", "rename", "renameat"]
+    for syscall in restricted_syscalls:
+        flt.add_rule(seccomp.KILL, syscall)
+    flt.load()
+
+def execute_assembly(asm_code):
+    """Compiles and executes user-provided x86-64 assembly."""
+    try:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".s") as f:
+            f.write(asm_code.encode())
+            f.flush()
+            obj_file = f.name.replace(".s", ".o")
+            bin_file = f.name.replace(".s", "")
+
+        # Assemble the code
+        print("Executing: nasm -felf64 <file>.s -o <file>.o")
+        asm_result = subprocess.run(["nasm", "-felf64", f.name, "-o", obj_file], capture_output=True, text=True)
+        if asm_result.returncode != 0:
+            return "", f"NASM Error:\n{asm_result.stderr}"
+        
+        # Link it
+        print("Executing: ld <file>.o -o <file>")
+        ld_result = subprocess.run(["ld", obj_file, "-o", bin_file], capture_output=True, text=True)
+        if ld_result.returncode != 0:
+            return "", f"LD Error:\n{ld_result.stderr}"
+        
+        # Run it in a restricted environment
+        print("Executing: <file>")
+        output = subprocess.run([bin_file], capture_output=True, text=True, timeout=5)
+        return output.stdout, output.stderr
+    except subprocess.CalledProcessError as e:
+        return "", f"Error: {e}"
+    except Exception as e:
+        return "", f"Execution error: {e}"
+    finally:
+        for file in [f.name, obj_file, bin_file]:
+            try:
+                os.remove(file)
+            except FileNotFoundError:
+                pass
+
+def main():
+    print("Welcome to the Super Secure x86_64 Executor! 🛠️")
+    print("This is an interactive assembly runner. Provide your x86-64 assembly, and we'll run it for you!")
+    print("""For example: this is a program that should work:
+mov rax, 1             ; syscall: write
+mov rdi, 1             ; file descriptor: stdout
+mov rsi, msg           ; pointer to message
+mov rdx, 7             ; message length
+syscall                ; invoke syscall
+mov rax, 60            ; syscall: exit
+xor rdi, rdi           ; status: 0
+syscall                ; invoke syscall
+section .data
+    msg db "Hello!", 0x0A  ; "Hello!" followed by a newline
+
+""")
+    print("To make sure that you cannot run external commands (I am not *that* nice) I am blocking the execve system call...")
+    
+    print("Enter your assembly code (end with an empty line):")
+    user_input = ""
+    while True:
+        try:
+            line = input()
+            if not line.strip():
+                break
+            user_input += line + "\n"
+        except EOFError:
+            break
+    
+    print("Compiling and executing your code... 🏃💨")
+    stdout, stderr = execute_assembly(user_input)
+    
+    if stderr:
+        print("Oops! Something went wrong:")
+        print(stderr)
+    else:
+        print("Execution finished! Here is your output:")
+        print(stdout)
+    
+    print("Thanks for using our amazing assembly executor! 🎉")
+    return
+
+if __name__ == "__main__":
+    main()

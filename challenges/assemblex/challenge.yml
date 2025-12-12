@@ -1,0 +1,25 @@
+name: assemblex
+author: zanardi
+category: exploitation
+description: |-
+  Convince the service to send you the contents of the flag file (/flag).
+value: 100
+
+image: .
+protocol: tcp
+host: null
+connection_info: null
+healthcheck: null
+
+flags:
+- ictf{AvengersAssemble}
+
+files:
+
+topics:
+- remote applications
+
+tags:
+- remote applications
+
+version: '0.1'

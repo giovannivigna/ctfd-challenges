@@ -1,0 +1,27 @@
+name: whattheenv
+author: zanardi
+category: source code
+description: |-
+  Convince the service to send you the contents of the flag file (/flag.txt).
+  You have access to the source code of the application.
+value: 100
+
+image: .
+protocol: tcp
+host: null
+connection_info: nc 0.cloud.chals.io 33473
+healthcheck: null
+
+flags:
+- ictf{ThisIsAPollutedEnvironment}
+
+files:
+- whattheenv-bundle.tgz
+
+topics:
+- remote applications
+
+tags:
+- remote applications
+
+version: '0.1'

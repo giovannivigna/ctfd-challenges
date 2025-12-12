@@ -1,0 +1,26 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(reflector, 1.1, vigna@cs.ucsb.edu)
+
+dnl Initialize automake
+AM_INIT_AUTOMAKE(reflector, 1.1)
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_INSTALL
+
+dnl Checks for libraries.
+AC_CHECK_LIB(pcap, pcap_open_live, , echo "reflector needs libpcap in order to build"; exit 1,)
+AC_CHECK_LIB(net, libnet_getdevice, , echo "reflector needs libnet in order to build"; exit 1,)
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(stdarg.h varargs.h, break)
+
+# Checks for library functions.
+AC_FUNC_VPRINTF
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+
+dnl Checks for library functions.
+AC_CONFIG_FILES(Makefile)
+AC_OUTPUT

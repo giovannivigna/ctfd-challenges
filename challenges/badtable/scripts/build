@@ -1,0 +1,3 @@
+#!/bin/bash
+IMAGE="badtable"
+docker build -t ${IMAGE} .

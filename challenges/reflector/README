@@ -1,0 +1,44 @@
+REFLECTOR
+Giovanni Vigna
+vigna@cs.ucsb.edu
+
+The reflector tool is able to simulate two non-existent hosts, say victim and
+relayer, at both the Ethernet and IP levels.  Whenever an attacker sends a
+packet to victim, the packet is intercepted by the reflector application and
+re-sent as a packet from relayer to the attacker's host. The reply that is
+sent by the attacker's host to relayer is then sent back as a packet from
+victim (in reply to the original packet) to the attacker's host.
+
+This is an example of how this works. Suppose that the reflector application
+is running on host 192.168.1.10 and it is simulating: a victim with Ethernet
+address 00:0A:0B:0C:11:37 and IP address 192.168.1.11; a relayer with Ethernet
+address 00:0A:06:1B:AB:B0 and IP address 192.168.1.9.
+
+If host 128.111.48.69 (the attacker) sends a TCP SYN packet to host
+192.168.1.11 the reflector application will capture that packet and transform
+it in a TCP SYN packet from 192.168.1.9 to 128.111.48.69. If the attacker host
+responds with a SYN/ACK packet (or a RST packet) to 192.168.1.9, then the
+reflector application will transform that packet in a packet from 192.168.1.11
+to 128.111.48.69. This process is repeated until the application is stopped.
+
+Note that the application works both locally (on a single segment LAN) and
+remotely (when the attacker is beyond the local gateway).
+
+The reflector sniffs and injects packets using libpcap and libnet,
+respectively.
+
+
+The application must be invoked with the following syntax:
+
+# reflector --victim-ip [IP] --victim-ethernet [Ethernet] \
+            --relayer-ip [IP] --relayer-ethernet [Ethernet] 
+
+For example, in the example above, if the gateway is 192.168.1.1 with Ethernet
+address 00:BA:FF:06:B0:B1, the invocation will be:
+
+# reflector --victim-ip 192.168.1.11 --victim-ethernet 00:0A:0B:0C:11:37 \
+            --relayer-ip 192.168.1.9 --relayer-ethernet 00:0A:06:1B:AB:B0
+
+Installation note: This package compiles on Linux systems only (and requires
+libnet and lipcap -- It is known to work with libnet-1.1.2.1 and
+libpcap-0.8.3).

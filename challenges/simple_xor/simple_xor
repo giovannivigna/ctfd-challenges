@@ -1,0 +1,11 @@
+service simple_xor
+{
+    socket_type = stream
+    protocol    = tcp
+    wait        = no
+    user        = simple_xor
+    bind        = 0.0.0.0
+    server      = /opt/challenges/simple_xor/run.sh
+    port        = 5002
+    type        = UNLISTED
+}
