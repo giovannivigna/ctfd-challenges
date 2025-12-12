@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+
+import os
+import base64
+import secrets
+import string
+from cryptography.fernet import Fernet
+
+# Load the flag from the file
+FLAG_FILE = "/flag"
+
+def load_flag():
+    try:
+        with open(FLAG_FILE, "r") as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return "FLAG{dummy_flag_for_testing}"
+
+# Provide your own key (must be 32 bytes and base64 encoded)
+my_key = base64.urlsafe_b64encode(b"allworkandnoplaymakejackadullboy") 
+
+# Ensure the key is exactly 32 bytes after base64 encoding
+if len(my_key) != 44:
+    raise ValueError("Key must be 32 bytes when base64 encoded (44 characters)")
+
+CIPHER = Fernet(my_key)
+
+# Helper to generate a random English-like phrase
+def generate_phrase(length=5):
+    words = [
+        "apple", "banana", "cherry", "dragon", "elephant", "falcon", "grape", "hippo",
+        "igloo", "jaguar", "kiwi", "lemon", "mango", "nacho", "orange", "penguin", "quokka",
+        "rabbit", "snail", "tiger", "umbrella", "violet", "walrus", "xylophone", "yak", "zebra"
+    ]
+    return ' '.join(secrets.choice(words) for _ in range(length))
+
+def encrypt_with_secret(data: str) -> str:
+    encrypted = CIPHER.encrypt(data.encode())
+    return base64.b64encode(encrypted).decode()
+
+def decrypt_with_secret(data: str) -> str:
+    encrypted = base64.b64decode(data)
+    return CIPHER.decrypt(encrypted).decode()
+
+def main():
+    print("=== Welcome to the Secret Knowledge Verification System! ===")
+    print("I know the secret key and the algorithm, and I am assuming that you also know the secret key and the algorithm: you wouldn't be here otherwise!")
+    print("First, I am going to prove to you thaht I know the secret and the algorithm by enrypting some text that you provide.")
+
+    user_input = input("Enter some text: ").strip()
+    encrypted_text = encrypt_with_secret(user_input)
+    print(f"Here is your encrypted text (encoded with base64): {encrypted_text}")
+    print(f"Since you know the secret key and the algorithm, you can verify that indeed the decrypted text is what you entered above.")
+
+    print("\nNow, let's do the reverse to prove that you also know how to encrypt correctly!")
+    print("I'll generate a random phrase, and you must prove you know the secret key and the algorithm by encrypting it.")
+    challenge_phrase = generate_phrase()
+
+    print(f"Your challenge phrase is: {challenge_phrase}")
+    print("Now send me the encrypted version of this phrase (base64 encoded).")
+
+    encrypted_response = input("Your encrypted phrase: ").strip()
+
+    try:
+        decrypted_response = decrypt_with_secret(encrypted_response)
+        if decrypted_response == challenge_phrase:
+            print("Access granted!")
+            print(f"The flag is: {load_flag()}")
+        else:
+            print("Access denied. Incorrect phrase.")
+    except Exception as e:
+        print(f"Access denied. Error during decryption: {e}")
+
+if __name__ == "__main__":
+    main()

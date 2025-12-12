@@ -14,7 +14,7 @@ ${FILENAME}.gz: ${FILENAME}
 
 ${FILENAME}:
 	echo "Why do people insist on inventing their own crypto algorithms?\nThe flag is:" > ${FILENAME}
-	cat ../flag/flag.txt >> ${FILENAME}
+	cat ../flag/flag >> ${FILENAME}
 
 badcrypt:
 	gcc -g -Wall -o badcrypt badcrypt.c

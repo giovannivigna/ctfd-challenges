@@ -1,0 +1,25 @@
+name: fuzzbiz
+author: zanardi
+category: fuzzing
+description: |-
+  Convince the service to send you the contents of the flag file (/flag).
+value: 100
+
+image: .
+protocol: tcp
+host: null
+connection_info: null
+healthcheck: null
+
+flags:
+- ictf{AFL++_is_the_bomb}
+
+files:
+
+topics:
+- fuzzing
+
+tags:
+- fuzzing
+
+version: '0.1'

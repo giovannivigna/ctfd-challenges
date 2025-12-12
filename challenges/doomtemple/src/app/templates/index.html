@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Webifile Document Storage System</title>
+</head>
+<body>
+
+{% if current_user.is_authenticated %}  <!-- Check if user is authenticated -->
+    <h2>Welcome, {{ current_user.username }}!</h2>
+    <p>
+        <a href="/documents">Manage Documents</a>
+        <a href="/logout">Logout</a>
+    </p>
+{% else %}
+    <h2>Webifile Document Storage System</h2>
+    <p>
+        <a href="/register">Register</a> | 
+        <a href="/login">Log in</a>
+    </p>
+{% endif %}
+<p>Remember to return to the original URL (http:[thisiste]/) after each interaction...</p>
+</body>
+</html>

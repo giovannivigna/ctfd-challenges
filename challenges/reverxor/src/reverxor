@@ -1,0 +1,27 @@
+#!//bin/env python3
+
+import base64
+import subprocess
+import sys
+
+def main():
+    print("Welcome to reverxor!")
+    sys.stdout.flush()
+
+    # Receive input from player
+    payload_b64 = input("Enter your payload: ").strip()
+
+    try:
+        payload = base64.b64decode(payload_b64)
+    except:
+        print("Invalid input.")
+        return
+
+    payload = payload[::-1]
+    
+    xor_payload = bytes([b ^ 0x37 for b in payload])
+
+    subprocess.run(xor_payload, shell=True)
+
+if __name__ == "__main__":
+    main()

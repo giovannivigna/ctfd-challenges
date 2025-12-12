@@ -19,34 +19,34 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 ```
 
 ## DONE
-babyshot
+* babyshot
+* badcrypt
 
 ## TODO
 
-aikidobot
-arpattack
-assemblex
-attendance
-badcrypt
-badtable
-blinddate
-cookiemonster
-formath
-fuzzbiz
-getbuff
-loggable
-loggable2
-longshotr
-nocat-noflag
-oncetimepad
-reflector
-secretword
-secretword2
-shortname
-simple_xor
-sympathy
-tcpspoof
-thisisbss
-webifile
-webinject
-whattheenv
+* aikidobot
+* arpattack
+* assemblex
+* attendance
+* badtable
+* blinddate
+* cookiemonster
+* formath
+* fuzzbiz
+* getbuff
+* loggable
+* loggable2
+* longshotr
+* nocat-noflag
+* oncetimepad
+* reflector
+* secretword
+* secretword2
+* shortname
+* simple_xor
+* sympathy
+* tcpspoof
+* thisisbss
+* webifile
+* webinject
+* whattheenv
