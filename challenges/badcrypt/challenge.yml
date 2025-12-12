@@ -28,7 +28,7 @@ type: standard
 # If you have a Dockerfile set to .
 # If you have an imaged hosted on Docker set to the image url (e.g. python/3.8:latest, registry.gitlab.com/python/3.8:latest)
 # Follow Docker best practices and assign a tag
-image: .
+image: null
 
 # Specify a protocol that should be used to connect to the running image
 # For example if the image is a website you can specify http or https
