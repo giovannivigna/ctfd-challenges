@@ -21,13 +21,13 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 ## DONE
 * babyshot
 * badcrypt
+* whattheenv
 
 ## TODO
 
 * aikidobot
 * arpattack
 * assemblex
-* attendance
 * badtable
 * blinddate
 * cookiemonster
@@ -49,4 +49,3 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 * thisisbss
 * webifile
 * webinject
-* whattheenv

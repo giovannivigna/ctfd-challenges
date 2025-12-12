@@ -1,3 +1,1 @@
-#!/bin/bash
-IMAGE="whattheenv"
-docker build -t ${IMAGE} .
+../../../scripts/build.sh
