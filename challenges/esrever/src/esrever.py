@@ -11,13 +11,7 @@ import random
 import string
 import struct
 import signal
-
-try:
-    from elftools.elf.elffile import ELFFile
-    from elftools.elf.sections import SymbolTableSection
-except ImportError:
-    print("Error: pyelftools not installed")
-    sys.exit(1)
+import argparse
 
 DURATION = 30
 
@@ -31,6 +25,12 @@ def generate_secret():
 
 def extract_binary_info(binary_path):
     """Extract information from the compiled binary"""
+    try:
+        from elftools.elf.elffile import ELFFile  # pyright: ignore[reportMissingImports]
+        from elftools.elf.sections import SymbolTableSection  # pyright: ignore[reportMissingImports]
+    except ImportError as e:
+        raise RuntimeError("pyelftools not installed (required for interactive mode)") from e
+
     with open(binary_path, 'rb') as f:
         elf = ELFFile(f)
         
@@ -62,13 +62,22 @@ def extract_binary_info(binary_path):
         
         return text_addr, data_size, main_addr
 
-def compile_binary(secret, padding_size, temp_dir):
-    """Compile esrever.c with the secret and padding"""
-    c_file = os.path.join(temp_dir, 'esrever.c')
-    binary_file = os.path.join(temp_dir, 'esrever')
+def _default_template_path():
+    # Prefer the template next to this script (local dev / repository layout),
+    # but keep the original container path as a fallback.
+    local = os.path.join(os.path.dirname(__file__), 'esrever.c')
+    if os.path.exists(local):
+        return local
+    return '/home/challenge/src/esrever.c'
+
+def compile_binary(secret, padding_size, out_dir, *, template_path=None, c_filename='esrever.c', binary_filename='esrever'):
+    """Generate a C file from the template and compile it, returning (c_path, binary_path)."""
+    os.makedirs(out_dir, exist_ok=True)
+    c_file = os.path.join(out_dir, c_filename)
+    binary_file = os.path.join(out_dir, binary_filename)
     
     # Read the template
-    template_path = '/home/challenge/src/esrever.c'
+    template_path = template_path or _default_template_path()
     with open(template_path, 'r') as f:
         template = f.read()
     
@@ -86,30 +95,77 @@ def compile_binary(secret, padding_size, temp_dir):
     
     if result.returncode != 0:
         print(f"Compilation error: {result.stderr}")
-        return None
+        return None, None
     
-    return binary_file
+    return c_file, binary_file
+
+def parse_args(argv):
+    p = argparse.ArgumentParser(description="esrever challenge runner / build helper")
+    p.add_argument(
+        "--build-only",
+        action="store_true",
+        help="Only generate the C file from the template and compile it, then exit.",
+    )
+    p.add_argument(
+        "--out-dir",
+        default=None,
+        help="Output directory for --build-only (default: current directory).",
+    )
+    p.add_argument(
+        "--secret",
+        default=None,
+        help="Override the randomly generated secret (default: random).",
+    )
+    p.add_argument(
+        "--padding-size",
+        type=int,
+        default=None,
+        help="Override the random padding size (default: random).",
+    )
+    return p.parse_args(argv)
 
 def main():
-    signal.alarm(DURATION)
-    signal.signal(signal.SIGALRM, handler)
+    args = parse_args(sys.argv[1:])
     
     # Generate random values
-    secret = generate_secret()
-    padding_size = random.randint(100, 1000)  # Random padding to vary segment sizes
+    secret = args.secret if args.secret is not None else generate_secret()
+    padding_size = args.padding_size if args.padding_size is not None else random.randint(100, 1000)  # Random padding to vary segment sizes
+
+    if args.build_only:
+        out_dir = args.out_dir or os.getcwd()
+        c_path, binary_path = compile_binary(
+            secret,
+            padding_size,
+            out_dir,
+            c_filename="esrever.gen.c",
+            binary_filename="esrever.gen",
+        )
+        if not binary_path:
+            print("Failed to compile binary")
+            return 1
+        print(f"Generated: {c_path}")
+        print(f"Compiled:  {binary_path}")
+        return 0
+
+    signal.alarm(DURATION)
+    signal.signal(signal.SIGALRM, handler)
     
     # Create temporary directory
     temp_dir = tempfile.mkdtemp(dir='/home/challenge/rw')
     
     try:
         # Compile the binary
-        binary_file = compile_binary(secret, padding_size, temp_dir)
+        _, binary_file = compile_binary(secret, padding_size, temp_dir)
         if not binary_file:
             print("Failed to compile binary")
             return 1
         
         # Extract binary information
-        text_addr, data_size, main_addr = extract_binary_info(binary_file)
+        try:
+            text_addr, data_size, main_addr = extract_binary_info(binary_file)
+        except RuntimeError as e:
+            print(f"Error: {e}")
+            return 1
         
         # Read binary and send it
         with open(binary_file, 'rb') as f:
