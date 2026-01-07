@@ -1,0 +1,31 @@
+name: fiddle
+author: vigna
+category: source code
+description: |-
+  Fiddle is a challenge that shows the many ways in which data can be passed back and forth between a parent process and a child process.
+
+  The service creates several file descriptors (shm, socketpair, pipes, memfd) and tells you which array index each one is stored at.
+
+  Provide a message and a list of indices to route the message through; if the message is received correctly, you get the (encrypted) flag.
+value: 100
+
+image: .
+protocol: tcp
+host: null
+connection_info: nc 0.cloud.chals.io 11222
+healthcheck: null
+
+flags:
+- ictf{FiddleWithFDs}
+
+files:
+- fiddle-bundle.tgz
+
+topics:
+- remote applications
+
+tags:
+- remote applications
+
+version: '0.1'
+
