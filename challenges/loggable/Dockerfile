@@ -4,8 +4,8 @@ RUN apt-get update -y \
     && apt-get install --no-install-recommends -y xinetd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-COPY ./flag/flag.txt /flag.txt
-RUN chmod 644 /flag.txt
+COPY ./flag/flag /flag
+RUN chmod 644 /flag
 
 RUN useradd -u 31337 -ms /bin/bash challenge
 # Prevents the user from writing to the home directory

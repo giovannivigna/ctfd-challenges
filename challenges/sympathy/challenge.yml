@@ -2,14 +2,14 @@ name: sympathy
 author: zanardi
 category: source code
 description: |-
-  Convince the service to send you the contents of the flag file (/flag.txt).
+  Convince the service to send you the contents of the flag file (/flag).
   You have access to the source code of the application.
 value: 100
 
 image: .
 protocol: tcp
 host: null
-connection_info: nc 0.cloud.chals.io 27953
+connection_info: nc 0.cloud.chals.io 23124
 healthcheck: null
 
 flags:

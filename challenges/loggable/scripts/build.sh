@@ -1,3 +1,1 @@
-#!/bin/bash
-IMAGE="loggable"
-docker build -t ${IMAGE} .
+../../../scripts/build.sh

@@ -22,6 +22,8 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 * babyshot
 * badcrypt
 * whattheenv
+* sympathy
+* sox40basic
 
 ## TODO
 
@@ -44,8 +46,17 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 * secretword2
 * shortname
 * simple_xor
-* sympathy
 * tcpspoof
 * thisisbss
 * webifile
 * webinject
+
+# Prompt for Co-pilots
+
+Look at the CTFd challenge in the <challenge> directory. 
+Read the requirements specified in the file FORMAT.md and tell me how you would modify the challenge to make it conformant to the required format. 
+Do not modify any file outside the challenge directory.
+
+Look at the CTFd challenge in the loggable directory. 
+Read the requirements specified in the file FORMAT.md and tell me how you would modify the challenge to make it conformant to the required format. 
+Do not modify any file outside the challenge directory.

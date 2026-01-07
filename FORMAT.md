@@ -26,6 +26,12 @@ If the challenge is a service running in a docker container (which is the most c
     - A symbolic link to the `bundle.sh` script contained in the `scripts` directory in the root of the repo.
     - A symbolic link to the `run.sh` script contained in the `scripts` directory in the root of the repo.
     - A symbolic link to the `stop.sh` script contained in the `scripts` directory in the root of the repo.
+  Make sure that the links allow the invocation of the script from the challenge directory.
+  For example, to create the bundle, one must be able to launch the following command from the directory of the challenge:
+  ```
+  % ./scripts/bundle.sh
+  ```
+* If the `challenge.yml` file references a bundle file with the source code of the challenge, the corresponding bundle should be generate invoking `./scripts/bundle.sh`.
 * A `Dockerfile` that describes how to build the container. Note that the `EXPOSE` command should match the `CHALLENGE_PORT` specified in the `challenge.sh` file.
 
 Review a single challenge and identify problems and inconsistencies with respect to this description and provide solutions and fixes.

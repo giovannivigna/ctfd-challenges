@@ -1,3 +1,1 @@
-#!/bin/bash
-IMAGE="sox40basic"
-docker build -t ${IMAGE} .
+../../../scripts/build.sh
