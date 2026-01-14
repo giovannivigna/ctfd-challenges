@@ -1,11 +1,10 @@
-name: "sleak"
-author: "vigna"
+name: sleak
+author: vigna
 category: pwn
 description: >-
-  A tiny heap manager that keeps "encrypted" blobs in a linked list.
-  It is very, very leaky.
+  A tiny heap manager that keeps "encrypted" blobs in a linked list. It is very, very
+  leaky.
 value: 100
-type: standard
 
 image: .
 protocol: tcp
@@ -14,17 +13,16 @@ connection_info: nc 0.cloud.chals.io 9009
 healthcheck: null
 
 flags:
-  - ictf{ThisIsAVeryLeakyBucket}
+- ictf{ThisIsAVeryLeakyBucket}
 
 files:
-  - sleak-bundle.tgz
+- sleak-bundle.tgz
 
 topics:
-  - pwn
+- pwn
+
 tags:
-  - pwn
-  - leak
+- pwn
+- leak
 
-state: visible
-version: "0.1"
-
+version: '0.1'
