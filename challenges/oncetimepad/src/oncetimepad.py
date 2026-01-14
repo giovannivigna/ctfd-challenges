@@ -147,7 +147,7 @@ the following sentence (base64-encoded for your convenience).
 
 	if answer.strip().lower() == sentence.strip().lower():
 		print(f"Correct! You obviously have stored the correct one-time pad key. The flag is:")
-		print(open("/flag.txt", "r").read())
+		print(open("/flag", "r").read())
 	else:
 		print("Incorrect! You must be using the wrong pad, or you might be trying some nasty shenanigans!")
 

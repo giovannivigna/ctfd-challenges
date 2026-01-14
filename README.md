@@ -24,6 +24,8 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 * whattheenv
 * sympathy
 * sox40basic
+* oncetimepad
+* sleak
 
 ## TODO
 
@@ -40,12 +42,10 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 * loggable2
 * longshotr
 * nocat-noflag
-* oncetimepad
 * reflector
 * secretword
 * secretword2
 * shortname
-* simple_xor
 * tcpspoof
 * thisisbss
 * webifile
