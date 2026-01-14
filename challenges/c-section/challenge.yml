@@ -4,7 +4,6 @@ category: pwn
 description: |-
   Welcome to the **c-infrastructure**, a mysterious super-powerful, secure, customizable execution environment.
   Get the flag!
-
 value: 100
 
 image: .
