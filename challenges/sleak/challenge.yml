@@ -1,5 +1,5 @@
 name: sleak
-author: vigna
+author: zanardi
 category: pwn
 description: >-
   A tiny heap manager that keeps "encrypted" blobs in a linked list. It is very, very

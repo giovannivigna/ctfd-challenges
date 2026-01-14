@@ -1,0 +1,27 @@
+name: c-section
+author: zanardi
+category: pwn
+description: |-
+  Welcome to the **c-infrastructure**, a mysterious super-powerful, secure, customizable execution environment.
+  Get the flag!
+
+value: 100
+
+image: .
+protocol: tcp
+host: null
+connection_info: nc 0.cloud.chals.io 00000
+healthcheck: null
+
+flags:
+- ictf{I_Didnt_Read_This_Section_Of_The_Manual}
+
+topics:
+- infra
+
+tags:
+- elf
+- sections
+- procfs
+
+version: '0.1'
