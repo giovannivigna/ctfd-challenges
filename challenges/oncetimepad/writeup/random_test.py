@@ -11,5 +11,16 @@ for i in range(10):
 print("randbytes")
 random.seed(SEED)
 l = list(random.randbytes(10))
+for b in l:
+    print(repr(b))
 
-print(repr(l))   
+print("getrandbits")
+random.seed(SEED)
+for i in range(10):
+    print(repr(int(random.getrandbits(8))))
+
+print("random")
+random.seed(SEED)
+for i in range(10):
+    print(repr(int(random.random() * 256)))
+
