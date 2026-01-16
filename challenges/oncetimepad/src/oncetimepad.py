@@ -113,7 +113,7 @@ Usage: oncetimepad generates a one-time-pad encrypted message
 	print(f"""Oncetimepad service started at {time_string}...
 
 The oncetimepad service provides communication protected with a freshly-seeded, \
-unbreakable one-time-pad-based encryption algorithm based on Python's excellent random number generator.
+unbreakable one-time-pad-based encryption algorithm based on Python's excellent random number generator: random.randint(0, 255).
 In order to verify the possession of the correct one-time pad, please decrypt \
 the following sentence (base64-encoded for your convenience).
 	""")
