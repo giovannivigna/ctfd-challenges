@@ -1,44 +1,27 @@
-# This file represents the base specification of your challenge. It is used by
-# other tools to install and deploy your challenge.
-
-# Required sections
-name: "esrever"
-author: "zanardi"
+name: esrever
+author: zanardi
 category: reversing
-description: "Connect to the service and analyze the provided binary to answer questions about its structure and inner workings."
+description: >-
+  Connect to the service and analyze the provided binary to answer questions about
+  its structure and inner workings.
 value: 100
-type: standard
 
-# Settings used for Dockerfile deployment
 image: .
-
-# Specify a protocol that should be used to connect to the running image
 protocol: tcp
-
-# Specify a host to deploy the challenge onto.
 host: null
-
-# Optional settings
-connection_info: null
+connection_info: nc 0.cloud.chals.io 21325
 healthcheck: null
 
 flags:
-    - ictf{FunIsEngineeringReverse}
+- ictf{FunIsEngineeringReverse}
 
-# Topics are used to help tell what techniques/information a challenge involves
 topics:
-    - reversing
-    - binary-analysis
-    - elf
+- reversing
+- binary-analysis
+- elf
 
-# Tags are used to provide additional public tagging to a challenge
 tags:
-    - reversing
-    - binary-analysis
+- reversing
+- binary-analysis
 
-# The state of the challenge.
-state: visible
-
-# Specifies what version of the challenge specification was used.
-version: "0.1"
-
+version: '0.1'

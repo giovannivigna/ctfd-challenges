@@ -1,38 +1,33 @@
 FROM ubuntu:22.04
 
 RUN apt-get update -y \
-    && apt-get install --no-install-recommends -y xinetd build-essential gdb binutils gcc-multilib g++-multilib \
+    && apt-get install --no-install-recommends -y xinetd build-essential \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-COPY ./flag/flag /flag
-RUN chmod 644 /flag
 
 RUN useradd -u 31337 -ms /bin/bash challenge
 # Prevents the user from writing to the home directory
 RUN chown root:root /home/challenge
 RUN chmod 755 /home/challenge
 
-# Source files
+COPY flag/flag /flag
+RUN chmod 644 /flag
+
+# Source files (includes the prebuilt firmware binary)
 COPY src /home/challenge/src
 # Read-only files
 COPY ro /home/challenge/ro
+RUN cp /home/challenge/src/extrafirm /home/challenge/ro/extrafirm
+RUN chmod 755 /home/challenge/ro/extrafirm
+
 # Writeable files
 COPY rw /home/challenge/rw
 RUN chown challenge:challenge /home/challenge/rw
 RUN chmod 755 /home/challenge/rw
 
-# Creates the application
-WORKDIR /home/challenge/src
-RUN make
-
-# Installs the binary
-RUN cp getbuff service.sh /home/challenge/ro/
-RUN chmod 755 /home/challenge/ro/service.sh
-RUN chmod 755 /home/challenge/ro/getbuff
-
 # Install the service
-RUN mv /home/challenge/src/xinetd.conf /etc/xinetd.d/getbuff
+COPY src/xinetd.conf /etc/xinetd.d/extrafirm
 
 # The port this leaves on
-EXPOSE 28651
+EXPOSE 28652
 CMD ["/usr/sbin/xinetd", "-dontfork"]

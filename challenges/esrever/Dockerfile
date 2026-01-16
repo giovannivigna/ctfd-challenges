@@ -1,12 +1,9 @@
 FROM gcc
 
 RUN apt-get update -y \
-    && apt-get install --no-install-recommends -y xinetd python3 python3-pip \
+    && apt-get install --no-install-recommends -y xinetd python3 python3-pyelftools \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-# Install pyelftools
-RUN pip3 install pyelftools
 
 RUN useradd -u 31337 -ms /bin/bash challenge
 # Prevents the user from writing to the home directory

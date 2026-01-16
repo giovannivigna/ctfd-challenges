@@ -1,11 +1,11 @@
 section .data
-    flag db '/flag.txt',0
+    flag db '/flag',0
 
 section .text
 global _start
 
 _start:
-    ; open("/flag.txt", O_RDONLY)
+    ; open("/flag", O_RDONLY)
     mov eax, 5       ; syscall number for open()
     mov ebx, flag    ; pointer to the filename
     xor ecx, ecx     ; flags (O_RDONLY)

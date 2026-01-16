@@ -26,6 +26,9 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 * sox40basic
 * oncetimepad
 * sleak
+* c-section
+* getbuff
+* esrever
 
 ## TODO
 
@@ -37,7 +40,6 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 * cookiemonster
 * formath
 * fuzzbiz
-* getbuff
 * loggable
 * loggable2
 * longshotr

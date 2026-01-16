@@ -12,8 +12,9 @@ import string
 import struct
 import signal
 import argparse
+import hashlib
 
-DURATION = 30
+DURATION = 10
 
 def handler(signum, frame):
     print("Timeout!")
@@ -70,7 +71,24 @@ def _default_template_path():
         return local
     return '/home/challenge/src/esrever.c'
 
-def compile_binary(secret, padding_size, out_dir, *, template_path=None, c_filename='esrever.c', binary_filename='esrever'):
+def _derive_text_base(secret: str, padding_size: int) -> int:
+    """
+    Derive a page-aligned text segment base address from (secret, padding_size).
+    This makes the text segment virtual address change on every compile (since
+    secret/padding_size are re-randomized each connection).
+    """
+    # Keep in a conservative range that works for non-PIE executables.
+    base_min = 0x400000
+    base_span = 0x1000000  # 16 MiB span
+    page = 0x1000
+
+    h = hashlib.sha256(f"{secret}:{padding_size}".encode()).digest()
+    n_pages = base_span // page
+    page_idx = int.from_bytes(h[:4], "little") % n_pages
+    return base_min + page_idx * page
+
+
+def compile_binary(secret, padding_size, out_dir, *, template_path=None, c_filename='esrever.c', binary_filename='esrever', text_base=None):
     """Generate a C file from the template and compile it, returning (c_path, binary_path)."""
     os.makedirs(out_dir, exist_ok=True)
     c_file = os.path.join(out_dir, c_filename)
@@ -90,7 +108,19 @@ def compile_binary(secret, padding_size, out_dir, *, template_path=None, c_filen
         f.write(code)
     
     # Compile
-    compile_cmd = ['gcc', '-no-pie', '-fno-pic', '-o', binary_file, c_file]
+    if text_base is None:
+        text_base = _derive_text_base(secret, padding_size)
+    # Force a different text segment virtual address per compilation.
+    # (This affects the ELF program header p_vaddr for the executable PT_LOAD.)
+    compile_cmd = [
+        'gcc',
+        '-no-pie',
+        '-fno-pic',
+        f'-Wl,-Ttext-segment=0x{text_base:x}',
+        '-o',
+        binary_file,
+        c_file,
+    ]
     result = subprocess.run(compile_cmd, capture_output=True, text=True)
     
     if result.returncode != 0:

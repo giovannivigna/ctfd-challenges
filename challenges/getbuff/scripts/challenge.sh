@@ -1,0 +1,5 @@
+#!/bin/bash
+
+CHALLENGE_NAME="getbuff"
+CHALLENGE_PORT=28651
+

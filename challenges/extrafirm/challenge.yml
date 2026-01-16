@@ -1,0 +1,28 @@
+name: extrafirm
+author: vigna
+category: reverse engineering
+description: |-
+  You found a suspicious firmware image.
+
+  Find the flag.
+value: 100
+
+image: .
+protocol: tcp
+host: null
+connection_info: null
+healthcheck: null
+
+flags:
+- ictf{ThisIsExtraFirmCode}
+
+files:
+- src/extrafirm
+
+topics:
+- reverse engineering
+
+tags:
+- reverse engineering
+
+version: '0.1'

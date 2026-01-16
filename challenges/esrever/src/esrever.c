@@ -7,9 +7,9 @@
 #define MAX_DATA_LEN 256
 
 // Random padding to vary segment sizes
-static char padding1[__PADDING_SIZE__] = {0};
+__attribute__((used)) static unsigned char padding1[__PADDING_SIZE__] = {1};
 static char secret[] = "__SECRET__";
-static char padding2[__PADDING_SIZE__] = {0};
+__attribute__((used)) static unsigned char padding2[__PADDING_SIZE__] = {1};
 
 typedef struct {
     char label[MAX_LABEL_LEN];
