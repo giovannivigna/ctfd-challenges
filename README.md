@@ -29,6 +29,7 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 * c-section
 * getbuff
 * esrever
+* extrafirm
 
 ## TODO
 
