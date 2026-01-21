@@ -1,10 +1,9 @@
 name: notsofirm
-author: vigna
+author: zanardi
 category: reverse engineering
 description: |-
-  A tiny "firmware" loader tries to read two partition files.
+  A tiny "firmware" loader that has special requirements... Can you meet them?
 
-  If both checksums are **0**, it will deobfuscate the flag.
 value: 100
 
 image: .
