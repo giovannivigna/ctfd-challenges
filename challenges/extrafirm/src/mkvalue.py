@@ -6,11 +6,6 @@ import sys
 KEY = bytes([0xC3, 0x7A, 0x15, 0xE9, 0x4B, 0x2D, 0x90, 0xFE])
 
 
-def rol8(x: int, r: int) -> int:
-    r &= 7
-    return ((x << r) & 0xFF) | (x >> (8 - r))
-
-
 def obfuscate_flag(flag_ascii: str) -> bytes:
     try:
         flag_bytes = flag_ascii.encode("ascii")
@@ -24,12 +19,7 @@ def obfuscate_flag(flag_ascii: str) -> bytes:
 
     out = bytearray(40)
     for i in range(40):
-        x = plain[i]
-        x ^= KEY[i % len(KEY)]
-        x ^= (0xA5 + (i * 7)) & 0xFF
-        x = rol8(x, (i % 7) + 1)
-        x ^= (0x3C ^ ((i * 11) & 0xFF)) & 0xFF
-        out[i] = x
+        out[i] = plain[i] ^ KEY[i % len(KEY)]
     return bytes(out)
 
 

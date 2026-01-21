@@ -2,11 +2,12 @@ CC ?= gcc
 CFLAGS ?= -O2 -Wall -Wextra -Wshadow -Wpedantic
 LDFLAGS ?=
 
-all: extrafirm
+all: notsofirm
 
-extrafirm: extrafirm.c
+notsofirm: notsofirm.c
 	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
-#strip -s $@ || true
+	strip -s $@ || true
 
 clean:
-	rm -f extrafirm
+	rm -f notsofirm
+

@@ -1,0 +1,29 @@
+name: notsofirm
+author: vigna
+category: reverse engineering
+description: |-
+  A tiny "firmware" loader tries to read two partition files.
+
+  If both checksums are **0**, it will deobfuscate the flag.
+value: 100
+
+image: .
+protocol: tcp
+host: null
+connection_info: null
+healthcheck: null
+
+flags:
+- ictf{ThisIsNotSoFirmCode}
+
+files:
+- src/notsofirm
+
+topics:
+- reverse engineering
+
+tags:
+- reverse engineering
+
+version: '0.1'
+

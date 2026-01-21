@@ -82,11 +82,6 @@ static inline uint8_t rol8(uint8_t x, unsigned r) {
     return (uint8_t)((x << r) | (x >> (8u - r)));
 }
 
-static inline uint8_t ror8(uint8_t x, unsigned r) {
-    r &= 7u;
-    return (uint8_t)((x >> r) | (x << (8u - r)));
-}
-
 static void checksum_a(int fd, uint8_t out[10]) {
     uint8_t s[10] = {0x42,0x11,0x9c,0x07,0x58,0xe1,0x2d,0xb6,0x73,0x0a};
     uint8_t buf[256];
@@ -208,10 +203,10 @@ static const struct expected_blob g_expected = {
     .tag = {'F','W','C','M','P','v','1','\0'},
     // Generated from flag by src/mkvalue.py (default flag: ictf{extrafirm_xor_checksums})
     .value = {
-        0x22,0xe1,0xbc,0x4e,0x2e,0x67,0xe5,0xf3,0xd1,0xe1,
-        0x8a,0x8e,0x0a,0x1f,0x6d,0xdf,0x08,0x77,0x72,0x46,
-        0x7c,0x2f,0xe1,0x2f,0x0b,0xea,0xb1,0xd0,0x4c,0x76,
-        0x49,0x61,0x94,0xea,0x09,0x5b,0x1b,0x87,0x6d,0x98
+        0xaa,0x19,0x61,0x8f,0x30,0x79,0xf8,0x97,0xb0,0x33,
+        0x66,0xac,0x33,0x59,0xe2,0x9f,0x85,0x13,0x67,0x84,
+        0x08,0x42,0xf4,0x9b,0xbe,0x7a,0x15,0xe9,0x4b,0x2d,
+        0x90,0xfe,0xc3,0x7a,0x15,0xe9,0x4b,0x2d,0x90,0xfe
     }
 };
 
@@ -219,14 +214,9 @@ static const struct expected_blob g_expected = {
 
 static const uint8_t g_key[8] = {0xC3,0x7A,0x15,0xE9,0x4B,0x2D,0x90,0xFE};
 
-static void deobfuscate_value_to_flag(const uint8_t in[40], uint8_t out[40]) {
+void extract_authorization_key(const uint8_t in[40], uint8_t out[40]) {
     for (size_t i = 0; i < 40; i++) {
-        uint8_t x = in[i];
-        x ^= (uint8_t)(0x3Cu ^ (uint8_t)((i * 11u) & 0xFFu));
-        x = ror8(x, (unsigned)((i % 7u) + 1u));
-        x ^= (uint8_t)((0xA5u + (i * 7u)) & 0xFFu);
-        x ^= g_key[i % (sizeof g_key)];
-        out[i] = x;
+        out[i] = (uint8_t)(in[i] ^ g_key[i % (sizeof g_key)]);
     }
 }
 
@@ -282,7 +272,7 @@ int main(void) {
     }
 
     uint8_t flag40[40];
-    deobfuscate_value_to_flag(g_expected.value, flag40);
+    extract_authorization_key(g_expected.value, flag40);
 
     // Print as a bounded C string (flag is < 40 bytes, zero-padded).
     char out[41];
