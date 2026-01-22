@@ -1,0 +1,29 @@
+name: onepunch
+author: vigna
+category: source code
+description: |-
+  The challenge takes 16 bytes as input: the first 8 bytes are treated as an address, and the second 8 bytes are written to that address. Then the program calls exit(). Can you redirect execution to read the flag?
+  You have access to the source code of the application.
+value: 100
+
+image: .
+protocol: tcp
+host: null
+connection_info: null
+healthcheck: null
+
+flags:
+- ictf{OnePunchToRuleThemAll}
+
+files:
+- onepunch-bundle.tgz
+
+topics:
+- binary exploitation
+- GOT overwrite
+
+tags:
+- binary exploitation
+- GOT overwrite
+
+version: '0.1'

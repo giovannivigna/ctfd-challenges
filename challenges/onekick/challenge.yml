@@ -1,0 +1,31 @@
+name: onekick
+author: vigna
+category: source code
+description: |-
+  The challenge takes 16 bytes as input: the first 8 bytes are treated as an address, and the second 8 bytes are written to that address. Then the program returns from main(). Can you find a way to redirect execution to read the flag?
+  You have access to the source code of the application.
+value: 100
+
+image: .
+protocol: tcp
+host: null
+connection_info: null
+healthcheck: null
+
+flags:
+- ictf{OneKickToFinishThem}
+
+files:
+- onekick-bundle.tgz
+
+topics:
+- binary exploitation
+- destructors
+- .fini_array
+
+tags:
+- binary exploitation
+- destructors
+- .fini_array
+
+version: '0.1'
