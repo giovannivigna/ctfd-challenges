@@ -7,7 +7,7 @@ It tries to read two partition files from:
 - `/home/challenge/rw/part0.bin`
 - `/home/challenge/rw/part1.bin`
 
-If they do not exist yet, the program lets you provide their contents as a **hex string** and writes them into the `rw` directory.
+If they do not exist yet, the program lets you provide their contents as a **hex string** (you can send multiple lines) and writes them into the `rw` directory. Send an empty line to finish providing input for each partition.
 
 It then computes a 1-byte checksum for each file:
 

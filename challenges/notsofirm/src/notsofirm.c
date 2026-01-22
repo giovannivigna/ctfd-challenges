@@ -7,10 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
 #include <unistd.h>
-
-static const char *FILE0 = "/home/challenge/rw/part0.bin";
-static const char *FILE1 = "/home/challenge/rw/part1.bin";
 
 // Obfuscated "ictf{ThisIsNotSoFirmCode}\0" (plain XOR with KEY)
 static const uint8_t KEY[8] = {'N', 'o', 't', 'S', 'o', 'K', 'e', 'y'};
@@ -42,7 +40,7 @@ __attribute__((noinline)) bool parse_hex_bytes(const char *hex, uint8_t **out, s
     if (!hex) return false;
     size_t n = strlen(hex);
     if ((n & 1u) != 0) return false;
-    if (n > 1024) return false; // cap: 512 bytes
+    if (n > 10240) return false; // cap: 5120 bytes (increased for multi-line input)
 
     size_t len = n / 2;
     uint8_t *buf = (uint8_t *)malloc(len);
@@ -100,30 +98,62 @@ __attribute__((noinline)) bool checksum_file(const char *path, uint8_t *sum_out)
 }
 
 __attribute__((noinline)) void maybe_create_file_from_input(const char *path, const char *label) {
+    // Check if file exists (will always fail for unique temp files, but keep the check)
     if (access(path, R_OK) == 0) return;
-
+    
     dprintf(STDOUT_FILENO, "Missing %s.\n", label);
-    dprintf(STDOUT_FILENO, "Send hex bytes to write %s (even length, max 1024 hex chars):\n", label);
+    dprintf(STDOUT_FILENO, "Send hex bytes to write %s (send empty line when done):\n", label);
+
+    // Read multiple lines until an empty line is encountered
+    size_t total_cap = 2048;
+    char *total_hex = (char *)malloc(total_cap);
+    if (!total_hex) return;
+    total_hex[0] = '\0';
+    size_t total_len = 0;
 
     char *line = NULL;
     size_t cap = 0;
-    ssize_t got = getline(&line, &cap, stdin);
-    if (got < 0) {
-        free(line);
-        return;
+    for (;;) {
+        ssize_t got = getline(&line, &cap, stdin);
+        if (got < 0) {
+            free(line);
+            free(total_hex);
+            return;
+        }
+        
+        // Check if line is empty (just newline)
+        strip_newline(line);
+        if (strlen(line) == 0) {
+            break;
+        }
+
+        // Append to total_hex, realloc if needed
+        size_t line_len = strlen(line);
+        if (total_len + line_len + 1 > total_cap) {
+            total_cap = (total_cap * 2) + line_len + 1;
+            char *new_total = (char *)realloc(total_hex, total_cap);
+            if (!new_total) {
+                free(line);
+                free(total_hex);
+                return;
+            }
+            total_hex = new_total;
+        }
+        strcat(total_hex, line);
+        total_len += line_len;
     }
-    strip_newline(line);
+    free(line);
 
     uint8_t *buf = NULL;
     size_t len = 0;
-    if (!parse_hex_bytes(line, &buf, &len)) {
+    if (!parse_hex_bytes(total_hex, &buf, &len)) {
         dprintf(STDOUT_FILENO, "Bad hex. Keeping %s missing.\n", label);
-        free(line);
+        free(total_hex);
         return;
     }
     (void)write_file(path, buf, len);
     free(buf);
-    free(line);
+    free(total_hex);
 }
 
 __attribute__((noinline)) void send_authorization_key(void) {
@@ -138,17 +168,26 @@ __attribute__((noinline)) void send_authorization_key(void) {
 }
 
 int main(void) {
+    // Generate unique temporary filenames for this run
+    char file0[256], file1[256];
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    pid_t pid = getpid();
+    snprintf(file0, sizeof(file0), "/home/challenge/rw/part0_%ld_%d.bin", (long)tv.tv_usec, (int)pid);
+    snprintf(file1, sizeof(file1), "/home/challenge/rw/part1_%ld_%d.bin", (long)tv.tv_usec, (int)pid);
+    
     dprintf(STDOUT_FILENO, "NOTSOFW minimal loader\n");
     dprintf(STDOUT_FILENO, "Reading partitions...\n");
-
+    
     // "Attempts to read two files": if they don't exist, allow the user to provide them.
-    maybe_create_file_from_input(FILE0, "part0.bin");
-    maybe_create_file_from_input(FILE1, "part1.bin");
+    maybe_create_file_from_input(file0, "part0.bin");
+    maybe_create_file_from_input(file1, "part1.bin");
 
     uint8_t s0 = 0, s1 = 0;
-    if (!checksum_file(FILE0, &s0) || !checksum_file(FILE1, &s1)) {
+    if (!checksum_file(file0, &s0) || !checksum_file(file1, &s1)) {
         dprintf(STDOUT_FILENO, "Partition read failed.\n");
-        return 1;
+        // Cleanup: delete partition files
+        goto end;
     }
 
     dprintf(STDOUT_FILENO, "Checksum(part0) = 0x%02x\n", s0);
@@ -156,10 +195,16 @@ int main(void) {
 
     if (s0 != 0xCA || s1 != 0xFE) {
         dprintf(STDOUT_FILENO, "Integrity check failed.\n");
-        return 1;
+        // Cleanup: delete partition files
+        goto end;
     }
 
     send_authorization_key();
+
+end:
+    // Cleanup: delete partition files
+    (void)unlink(file0);
+    (void)unlink(file1);
     return 0;
 }
 
