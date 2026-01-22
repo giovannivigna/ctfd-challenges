@@ -154,7 +154,7 @@ int main(void) {
     dprintf(STDOUT_FILENO, "Checksum(part0) = 0x%02x\n", s0);
     dprintf(STDOUT_FILENO, "Checksum(part1) = 0x%02x\n", s1);
 
-    if (s0 != 0 || s1 != 0) {
+    if (s0 != 0xCA || s1 != 0xFE) {
         dprintf(STDOUT_FILENO, "Integrity check failed.\n");
         return 1;
     }

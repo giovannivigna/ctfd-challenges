@@ -13,15 +13,15 @@ It then computes a 1-byte checksum for each file:
 
 - checksum = (sum of all bytes) mod 256
 
-If **both checksums are 0**, it deobfuscates and prints the flag.
+If **part0 checksum is 0xCA and part1 checksum is 0xFE**, it deobfuscates and prints the flag.
 
 ## Solution
 
-Make both checksums equal to 0.
+Make part0 checksum equal to 0xCA and part1 checksum equal to 0xFE.
 
-The easiest payload is a single `00` byte for each partition (sum = 0).
+The easiest payload is a single `CA` byte for part0 and a single `FE` byte for part1.
 
 ## Exploit
 
-Run `./writeup/exploit` to connect and send `00` twice.
+Run `./writeup/exploit` to connect and send `CA` and `FE`.
 
