@@ -1,0 +1,36 @@
+name: moxiebox
+author: zanardi
+category: reversing
+description: |-
+  This program prints an obfuscated flag (printable characters only) and asks you to enter the deobfuscated version.
+
+  The catch: the provided binary is not x86_64. Run it under QEMU user-mode and debug it to recover the real flag.
+
+  Suggested workflow:
+  - Run normally: `qemu-riscv64 ./moxiebox`
+  - Debug: `qemu-riscv64 -g 1234 ./moxiebox` then attach with `gdb-multiarch`
+value: 100
+type: standard
+
+image: null
+protocol: tcp
+host: null
+connection_info: null
+healthcheck: null
+
+flags:
+  - ictf{moxie_has_flare}
+
+files:
+  - src/moxiebox
+
+topics:
+  - reversing
+  - qemu-user
+  - gdb
+
+tags:
+  - reversing
+
+state: visible
+version: "0.1"
