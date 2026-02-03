@@ -2,13 +2,8 @@ name: riskybehavior
 author: zanardi
 category: reversing
 description: |-
-  This program prints an obfuscated flag (printable characters only) and asks you to enter the deobfuscated version.
+  Find the flag in this risc-y binary.
 
-  The catch: the provided binary is not x86_64. Run it under QEMU user-mode and debug it to recover the real flag.
-
-  Suggested workflow:
-  - Run normally: `qemu-riscv64 ./riskybehavior`
-  - Debug: `qemu-riscv64 -g 1234 ./riskybehavior` then attach with `gdb-multiarch`
 value: 100
 type: standard
 
@@ -26,9 +21,7 @@ files:
 
 topics:
   - reversing
-  - qemu-user
-  - gdb
-
+  
 tags:
   - reversing
 

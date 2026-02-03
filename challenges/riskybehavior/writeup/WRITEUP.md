@@ -4,7 +4,7 @@
 
 You are given a Linux ELF binary for a non-native architecture. The program prints an obfuscated (but reversible) string and asks you to type the deobfuscated version. If you enter the correct string, it prints:
 
-> All right! You guessed that moxie flag!
+> All right! You guessed that risky flag!
 
 ## Running
 

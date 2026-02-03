@@ -127,8 +127,12 @@ int main(void) {
   const size_t elen = strlen(expected);
   const size_t glen = strlen(got);
 
+  puts("Computing the checksum of the expected siagnture...");
   const uint32_t ecrc = crc32_ieee((const uint8_t *)expected, elen);
+  
+  puts("Computing the checksum of the got signature...");
   const uint32_t gcrc = crc32_ieee((const uint8_t *)got, glen);
+  puts("Done!");
 
   if (elen == glen && ecrc == gcrc) {
     puts("Correct checksum in /flag file!");
