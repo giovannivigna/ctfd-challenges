@@ -1,4 +1,4 @@
-name: moxiebox
+name: riskybehavior
 author: zanardi
 category: reversing
 description: |-
@@ -7,8 +7,8 @@ description: |-
   The catch: the provided binary is not x86_64. Run it under QEMU user-mode and debug it to recover the real flag.
 
   Suggested workflow:
-  - Run normally: `qemu-riscv64 ./moxiebox`
-  - Debug: `qemu-riscv64 -g 1234 ./moxiebox` then attach with `gdb-multiarch`
+  - Run normally: `qemu-riscv64 ./riskybehavior`
+  - Debug: `qemu-riscv64 -g 1234 ./riskybehavior` then attach with `gdb-multiarch`
 value: 100
 type: standard
 
@@ -19,10 +19,10 @@ connection_info: null
 healthcheck: null
 
 flags:
-  - ictf{moxie_has_flare}
+  - ictf{to_risc_or_not_to_risc}
 
 files:
-  - src/moxiebox
+  - src/riskybehavior
 
 topics:
   - reversing

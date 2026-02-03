@@ -1,0 +1,42 @@
+name: cerebralcortex
+author: vigna
+category: reversing
+description: |-
+  This challenge ships a **bare-metal Cortex-M** firmware image.
+
+  The firmware deobfuscates the flag internally and then reads `/flag` from an **embedded filesystem**
+  stored inside the firmware image.
+
+  The embedded `/flag` content is intentionally wrong by default (e.g. `FAKEDATANOTWORKING`), so you
+  must patch the image after reversing to make it print `Correct checksum in /flag file!` and exit.
+
+  Suggested workflow:
+  - Run: `qemu-system-arm -M lm3s6965evb -nographic -kernel cerebralcortex.elf -semihosting-config enable=on,target=native`
+  - Debug: `qemu-system-arm -M lm3s6965evb -nographic -kernel cerebralcortex.elf -semihosting-config enable=on,target=native -S -gdb tcp::1234` then attach with `gdb-multiarch`
+value: 100
+type: standard
+
+image: null
+protocol: tcp
+host: null
+connection_info: null
+healthcheck: null
+
+flags:
+  - ictf{this_was_brainy}
+
+files:
+  - src/cerebralcortex.elf
+
+topics:
+  - reversing
+  - cortex-m
+  - qemu
+  - semihosting
+
+tags:
+  - reversing
+
+state: visible
+version: "0.1"
+

@@ -27,10 +27,14 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 * oncetimepad
 * sleak
 * c-section
-* getbuff
 * esrever
 * extrafirm
 * notsofirm
+* getbuff
+
+## IN PROGRESS
+* cerebralcortex
+* riskybehavior
 
 ## TODO
 

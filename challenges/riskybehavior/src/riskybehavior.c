@@ -22,9 +22,9 @@ static int mod95(int x) {
  * Decoding does the inverse; note prev uses the previous encoded symbol.
  */
 static void deobfuscate_printable(const char *in, char *out, size_t n) {
-  static const uint8_t key[] = "moxiebox";
+  static const uint8_t key[] = "riskybehavior";
   const int inv12 = 8; /* 12*8 == 1 (mod 95) */
-  int prev = 17;
+  int prev = 8;
 
   for (size_t i = 0; i < n; i++) {
     int y = (unsigned char)in[i] - 32; /* encoded symbol, 0..94 */
@@ -48,12 +48,12 @@ int main(void) {
   setvbuf(stdout, NULL, _IONBF, 0);
   setvbuf(stdin, NULL, _IONBF, 0);
 
-  /* Obfuscated form of: ictf{moxie_has_flare} */
-  static const char obf[] = ":}l&JwVgag{lX#RUD0 Q=";
+  /* Obfuscated form of: ictf{to_risc_or_not_to_risc} */
+  static const char obf[] = "i/>P:j_clRy`L#0g^N9G;?SutMY@";
   char want[128];
   char got[128];
 
-  puts("== moxiebox ==");
+  puts("== riskybehavior ==");
   puts("I have an obfuscated string for you.");
   puts("It only contains printable characters.");
   printf("obfuscated: %s\n", obf);
@@ -66,7 +66,7 @@ int main(void) {
   deobfuscate_printable(obf, want, strlen(obf));
 
   if (strcmp(got, want) == 0) {
-    puts("All right! You guessed that moxie flag!");
+    puts("All right! You guessed that risky flag!");
     return 0;
   }
 

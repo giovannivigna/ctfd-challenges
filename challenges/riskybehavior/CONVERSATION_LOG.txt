@@ -1,0 +1,150 @@
+Conversation log (best-effort)
+==============================
+
+Note:
+- This file is a best-effort transcript/summary of the chat session.
+- It captures user requests and the resulting engineering actions and outcomes.
+- It may not include every hidden system attachment or exact tool output formatting.
+
+Timeline
+--------
+
+User:
+- Create a new challenge called "moxiebox" under "challenges".
+- Challenge: simple C file stores an obfuscated flag string (printable characters only).
+- Program prints the obfuscated string, asks user to enter deobfuscated value.
+- On correct input prints: "All right! You guessed that moxie flag!"
+- Initial idea: compile into Moxie ISA and require QEMU user-mode debugging.
+
+Assistant:
+- Inspected FORMAT.md and existing challenges to match repo conventions.
+- Determined modern QEMU removed moxie CPU; decided to target an allowed QEMU user-mode arch instead (RISC-V 64-bit) so the challenge remains solvable via qemu-user + gdb.
+- Created challenge skeleton under challenges/moxiebox:
+  - flag/flag
+  - ro/.gitkeep
+  - rw/.gitkeep
+  - src/ (C source + Makefile)
+  - writeup/ (WRITEUP.md + exploit + requirements.txt)
+  - challenge.yml
+- Implemented reversible printable-only obfuscation and embedded obfuscated string.
+- Built a RISC-V64 Linux ELF and verified running under qemu-riscv64.
+
+User:
+- Rename from moxiebox to riskybehavior and ensure FORMAT.md compliance.
+
+Assistant:
+- Renamed directory to challenges/riskybehavior and updated:
+  - challenge.yml name/files
+  - README.md
+  - writeup/WRITEUP.md and exploit
+  - src filenames and Makefile target
+- Ensured FORMAT.md structure and added writeup/requirements.txt.
+- Rebuilt the RISC-V binary as src/riskybehavior and verified under qemu-riscv64.
+
+User:
+- Make the "string to guess" the actual flag.
+
+Assistant:
+- Temporarily changed code to read expected string from /flag with fallback to deobfuscation.
+
+User:
+- Clarification: don't read /flag. Instead ensure the embedded obfuscated string deobfuscates to "ictf{to_risc_or_not_to_risc}".
+
+Assistant:
+- Removed /flag reading.
+- Regenerated embedded obfuscated string so it deobfuscates to ictf{to_risc_or_not_to_risc}.
+- Updated challenge.yml and flag/flag accordingly.
+- Rebuilt RISC-V binary and verified.
+
+User:
+- Corrupt e_machine so it won't work with binfmt_misc.
+
+Assistant:
+- Attempted; discovered it breaks QEMU too (QEMU checks e_machine).
+- Restored e_machine to EM_RISCV.
+
+User:
+- What is EI_OSABI? Then: set EI_OSABI so binfmt_misc won't trigger.
+
+Assistant:
+- Explained EI_OSABI.
+- Set EI_OSABI, but user reported binfmt_misc still executed.
+
+User:
+- Clarified different machine; provided binfmt rule later.
+
+Assistant:
+- Found EI_OSABI wasn’t masked in the provided binfmt rule, but EI_ABIVERSION was checked.
+- Patched EI_ABIVERSION (e_ident[8]) to 1 so the provided binfmt_misc rule (expecting 0) fails, while explicit qemu-riscv64-static still works.
+- Added writeup section explaining the binfmt_misc mismatch learning point.
+
+User:
+- Make obfuscated string not contain quotes; then remove spaces too.
+
+Assistant:
+- Regenerated obfuscated string so it has no quotes/backslashes, then regenerated again to avoid spaces as well.
+- Updated decoder seed accordingly in src and writeup exploit.
+- Rebuilt binary and re-applied binfmt-mismatch patch after rebuilds.
+
+User:
+- Don't strip the binary.
+
+Assistant:
+- Rebuilt binary without -s and with -g (debug info), verified "not stripped".
+
+User:
+- Ensure EI_ABIVERSION set so binfmt_misc fails; then asked to make it part of Makefile.
+
+Assistant:
+- Added build-time patching to src/Makefile.
+- Iterated on patching approach to be robust across shells/machines.
+- Ended with a dedicated patch script invoked by Makefile to patch and verify header bytes.
+
+User:
+- Changed success message to "risky flag".
+
+Assistant:
+- Updated C source message and rebuilt RISC-V binary; verified EI_ABIVERSION mismatch still applied.
+
+User:
+- Reported binfmt_misc not fooled even with EI_ABIVERSION=1 (0/1 readback).
+
+Assistant:
+- Noted that some systems may have alternative binfmt rules that ignore EI_ABIVERSION.
+- Strengthened mismatch by also patching e_ident padding bytes (offsets 9..15) to a non-zero marker "RISKY!!".
+- Verified qemu-riscv64-static still runs.
+
+Final notable state (as of end of session)
+------------------------------------------
+
+Challenge directory:
+- challenges/riskybehavior/
+  - challenge.yml
+  - flag/flag                 (ictf{to_risc_or_not_to_risc})
+  - ro/.gitkeep
+  - rw/.gitkeep
+  - src/
+    - riskybehavior.c
+    - riskybehavior           (RISC-V64 ELF, with debug_info, not stripped)
+    - Makefile                (invokes patch_binfmt.sh after link)
+    - patch_binfmt.sh         (patches ELF e_ident to defeat binfmt rules and verifies)
+  - writeup/
+    - WRITEUP.md              (includes binfmt_misc learning section)
+    - exploit                 (offline deobfuscation helper; uses matching seed/key)
+    - requirements.txt
+
+Obfuscation:
+- Printable-only reversible transform modulo 95 (ASCII 0x20..0x7e).
+- Embedded obfuscated string currently prints without spaces/quotes:
+  - i/>P:j_clRy`L#0g^N9G;?SutMY@
+- Deobfuscates to:
+  - ictf{to_risc_or_not_to_risc}
+
+binfmt_misc mismatch:
+- Patched ELF identification bytes:
+  - EI_OSABI (e_ident[7]) = 0
+  - EI_ABIVERSION (e_ident[8]) = 1
+  - e_ident[9..15] = ASCII "RISKY!!"
+- Goal: prevent automatic execution via common qemu-binfmt registrations while still allowing explicit:
+  - qemu-riscv64-static ./riskybehavior
+
