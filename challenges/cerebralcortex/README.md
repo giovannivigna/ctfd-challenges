@@ -32,3 +32,19 @@ qemu-system-arm -M lm3s6965evb -nographic \
   -semihosting-config enable=on,target=native
 ```
 
+## Build with Docker (no local toolchain)
+
+From `challenges/cerebralcortex/`:
+
+```bash
+make -C src docker
+```
+
+Outputs end up in `src/` (e.g. `src/cerebralcortex.elf`, `src/cerebralcortex.bin`).
+
+Clean build artifacts:
+
+```bash
+make -C src docker-clean
+```
+

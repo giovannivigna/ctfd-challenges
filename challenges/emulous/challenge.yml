@@ -1,0 +1,31 @@
+name: emulous
+author: vigna
+category: reversing
+description: |-
+  If you use the right password, you will decrypt the flag...
+
+value: 100
+type: standard
+
+image: null
+protocol: tcp
+host: null
+connection_info: null
+healthcheck: null
+
+flags:
+  - ictf{emulation_is_king}
+
+files:
+  - src/emulous
+
+topics:
+  - reversing
+
+tags:
+  - reversing
+  - emulation
+
+state: visible
+version: "0.1"
+
