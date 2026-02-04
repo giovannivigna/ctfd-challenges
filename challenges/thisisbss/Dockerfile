@@ -7,9 +7,9 @@ RUN dpkg --add-architecture i386 \
     && rm -rf /var/lib/apt/lists/*
 
 # Important: (for thisisbss) The flag must be owned by root (and be world-readable) but the service should run as a different user.
-COPY flag/flag.txt /flag.txt
-RUN chmod 644 /flag.txt
-RUN chown root:root /flag.txt
+COPY flag/flag /flag
+RUN chmod 644 /flag
+RUN chown root:root /flag
 
 RUN useradd -u 31337 -ms /bin/bash challenge
 # Prevents the user from writing to the home directory

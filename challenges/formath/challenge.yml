@@ -2,7 +2,7 @@ name: formath
 author: zanardi
 category: source code
 description: |-
-  Convince the service to send you the contents of the flag file (/flag.txt).
+  Convince the service to send you the contents of the flag file (/flag).
   You have access to the source code of the application.
 value: 100
 

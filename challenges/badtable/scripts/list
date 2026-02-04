@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# The image name to search for
-IMAGE_NAME="badtable"
-
-# List running containers based on the specified image
-echo "Listing containers running image: $IMAGE_NAME"
-docker ps --format '{{.ID}}\t{{.Image}}\t{{.Names}}' | grep $IMAGE_NAME

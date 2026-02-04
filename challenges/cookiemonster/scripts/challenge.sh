@@ -1,0 +1,3 @@
+CHALLENGE_NAME="cookiemonster"
+CHALLENGE_PORT=5004
+

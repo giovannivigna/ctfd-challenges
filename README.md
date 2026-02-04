@@ -19,52 +19,72 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 ```
 
 ## DONE
-* babyshot
-* badcrypt
-* whattheenv
-* sympathy
-* sox40basic
-* oncetimepad
-* sleak
-* c-section
-* esrever
-* extrafirm
-* notsofirm
-* getbuff
 
-## IN PROGRESS
-* cerebralcortex
-* riskybehavior
+* babyshot (command injection)
+* sympathy (path injection)
+
+* badcrypt (XOR-encryption with key)
+* oncetimepad (time-based seed for encryption)
+
+* whattheenv (environment variables)
+* sox40basic (oracle replay)
+
+* sleak (leak memory addresses)
+* c-section (section locations in memory)
+* esrever (reversing)
+
+* extrafirm (reversing)
+* notsofirm (reversing)
+
+* cerebralcortex (QEMU Cortex-M firmware)
+* riskybehavior (RISC binary statically linked)
+* emulous (PowerPC QEMU user, dynamically linked)
+
+* getbuff (buffer overflow)
+* cookiemonster (buffer overflow)
+* thisisbss (BSS overflow)
+* formath (format string)
+* longshotr (integer overflow)
+* badtable (index manipulation)
+
 
 ## TODO
+* fiddle (started, partial)
+* filesync (partial)
 
-* aikidobot
-* arpattack
-* assemblex
-* badtable
+* assemblex (assembly)
+* codequill (codeQL)
+
+## Web
+* admitone
 * blinddate
-* cookiemonster
-* formath
-* fuzzbiz
-* loggable
-* loggable2
-* longshotr
-* nocat-noflag
-* reflector
-* secretword
-* secretword2
-* shortname
-* tcpspoof
-* thisisbss
+* bombshell
+* doomtemple
 * webifile
 * webinject
+
+
+## AI
+* aikidobot
+
+## NETWORK
+* arpattack
+
+## FUZZING
+* fuzzbiz
+* reflector
+
+* loggable
+* loggable2
+
+* nocat-noflag
+* secretword
+* secretword2
+* tcpspoof
 
 # Prompt for Co-pilots
 
 Look at the CTFd challenge in the <challenge> directory. 
 Read the requirements specified in the file FORMAT.md and tell me how you would modify the challenge to make it conformant to the required format. 
-Do not modify any file outside the challenge directory.
-
-Look at the CTFd challenge in the loggable directory. 
-Read the requirements specified in the file FORMAT.md and tell me how you would modify the challenge to make it conformant to the required format. 
+Make sure that the exploit works.
 Do not modify any file outside the challenge directory.

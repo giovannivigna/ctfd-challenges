@@ -5,8 +5,8 @@ RUN dpkg --add-architecture i386 \
     && apt-get install --no-install-recommends -y xinetd make gcc-multilib g++-multilib libc6-dev-i386 libssl-dev:i386 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-COPY flag/flag.txt /flag.txt
-RUN chmod 644 /flag.txt
+COPY flag/flag /flag
+RUN chmod 444 /flag
 
 RUN useradd -u 31337 -ms /bin/bash challenge
 # Prevents the user from writing to the home directory

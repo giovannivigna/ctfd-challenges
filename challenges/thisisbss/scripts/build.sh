@@ -1,3 +1,1 @@
-#!/bin/bash
-IMAGE="thisisbss"
-docker build -t ${IMAGE} .
+../../../scripts/build.sh

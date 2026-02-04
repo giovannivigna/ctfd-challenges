@@ -29,8 +29,9 @@ ENV LC_ALL en_US.UTF-8
 RUN wget -O ~/.gdbinit-gef.py --no-check-certificate https://gef.blah.cat/py
 RUN echo source ~/.gdbinit-gef.py >> ~/.gdbinit
 
-COPY ./flag/flag.txt /flag.txt
-RUN chmod 644 /flag.txt
+# Flag must not be /flag.txt (see FORMAT.md)
+COPY flag/flag /flag
+RUN chmod 644 /flag && chown root:root /flag
 
 RUN useradd -u 31337 -ms /bin/bash challenge
 # Prevents the user from writing to the home directory
@@ -62,4 +63,4 @@ EXPOSE 1104
 CMD ["/usr/sbin/xinetd", "-dontfork"]
 
 # docker build .
-# docker run -d -p 1104:1104 --name formath <image id>
+# docker run -d -p 1104:1104 --name badtable <image id>

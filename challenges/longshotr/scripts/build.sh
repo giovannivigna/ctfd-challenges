@@ -1,3 +1,1 @@
-#!/bin/bash
-IMAGE="longshotr"
-docker build -t ${IMAGE} .
+../../../scripts/build.sh
