@@ -1,3 +1,1 @@
-#!/bin/bash
-IMAGE="nocat-noflag"
-docker build -t ${IMAGE} .
+../../../scripts/build.sh

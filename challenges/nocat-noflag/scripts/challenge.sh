@@ -1,0 +1,3 @@
+CHALLENGE_NAME="nocat-noflag"
+CHALLENGE_PORT=25252
+

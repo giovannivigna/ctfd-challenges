@@ -1,9 +1,9 @@
 name: secretword
 author: zanardi
-category: source code
+category: reverse engineering
 description: |-
   Convince the service to send you the contents of the flag file (/flag).
-  You have access to the source code of the application.
+  You are given the compiled binary (with debugging symbols).
 value: 100
 
 image: .
@@ -16,7 +16,7 @@ flags:
 - ictf{SecretsAreDifficultToKeep}
 
 files:
-- src/secretword.c
+- src/secretword
 
 topics:
 - remote applications

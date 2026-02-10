@@ -1,3 +1,1 @@
-#!/bin/bash
-IMAGE="secretword"
-docker build -t ${IMAGE} .
+../../../scripts/build.sh

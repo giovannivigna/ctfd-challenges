@@ -25,6 +25,9 @@ RUN chmod 755 /home/challenge/rw
 WORKDIR /home/challenge/src
 RUN make
 
+# Ensure read-only files remain read-only at runtime
+RUN chmod -R a-w /home/challenge/ro
+
 # Install the service
 RUN mv /home/challenge/src/xinetd.conf /etc/xinetd.d/loggable
 
