@@ -18,6 +18,8 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 % ./scripts/stop.sh
 ```
 
+Please remember to set the `connection` to `null` in the `challenge.yml` file before deployment, otherwise CTFd will use the provided connection string, which will not match with the port assigned to the container.
+ 
 ## DONE
 
 * babyshot (command injection)
@@ -47,6 +49,12 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 * longshotr (integer overflow)
 * badtable (index manipulation)
 
+* loggable
+* loggable2
+* nocat-noflag
+* secretword
+* secretword2
+
 
 ## TODO
 
@@ -75,12 +83,6 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 * fuzzbiz
 * reflector
 
-* loggable
-* loggable2
-
-* nocat-noflag
-* secretword
-* secretword2
 * tcpspoof
 
 # Prompt for Co-pilots

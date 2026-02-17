@@ -1,20 +1,19 @@
 name: assemblex
 author: zanardi
 category: exploitation
-description: |-
-  Convince the service to send you the contents of the flag file (/flag).
+description: Convince the service to send you the contents of the flag file (/flag).
 value: 100
 
 image: .
 protocol: tcp
 host: null
-connection_info: null
+connection_info: nc 0.cloud.chals.io 24551
 healthcheck: null
 
 flags:
 - ictf{AvengersAssemble}
 
-files:
+files: null
 
 topics:
 - remote applications
