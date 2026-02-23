@@ -57,13 +57,13 @@ To build/start/stop a challenge, call the scripts in the `script` directory from
 * codequill (codeQL)
 
 ## Web
+
 * admitone
 * blinddate
 * bombshell
 * doomtemple
 * webifile
 * webinject
-
 
 ## AI
 * aikidobot
