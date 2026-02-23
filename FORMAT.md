@@ -33,6 +33,7 @@ If the challenge is a service running in a docker container (which is the most c
   ```
 * If the `challenge.yml` file references a bundle file with the source code of the challenge, the corresponding bundle should be generate invoking `./scripts/bundle.sh`.
 * A `Dockerfile` that describes how to build the container. Note that the `EXPOSE` command should match the `CHALLENGE_PORT` specified in the `challenge.sh` file.
+* If the challenge contains an `xinetd.conf` file, make sure that the service name is the name of the challenge.
 
 Review a single challenge and identify problems and inconsistencies with respect to this description and provide solutions and fixes.
 Do NOT change anything outside the challenge being analyzed.
