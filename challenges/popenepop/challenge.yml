@@ -1,4 +1,4 @@
-name: loggable
+name: popenepop
 author: zanardi
 category: source code
 description: |-
@@ -9,14 +9,14 @@ value: 100
 image: .
 protocol: tcp
 host: null
-connection_info: nc 0.cloud.chals.io 12375
+connection_info: null
 healthcheck: null
 
 flags:
-- ictf{ThisIsJustAWarmUp}
+- ictf{MindWhatYouPopen}
 
 files:
-- loggable-bundle.tgz
+- popenepop-bundle.tgz
 
 topics:
 - remote applications
