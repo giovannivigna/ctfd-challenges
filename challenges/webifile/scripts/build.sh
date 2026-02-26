@@ -1,3 +1,1 @@
-#!/bin/bash
-IMAGE="webifile"
-docker build -t ${IMAGE} .
+../../../scripts/build.sh

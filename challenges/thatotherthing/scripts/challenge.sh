@@ -1,0 +1,2 @@
+CHALLENGE_NAME="thatotherthing"
+CHALLENGE_PORT=31341

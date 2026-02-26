@@ -1,0 +1,3 @@
+# Suggested Python dependencies for the writeup solve script.
+angr
+pwntools

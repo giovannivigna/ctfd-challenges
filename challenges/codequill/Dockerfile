@@ -1,12 +1,12 @@
 FROM gcc
 
 RUN apt-get update -y \
-    && apt-get install --no-install-recommends -y xinetd python3 curl\
+    && apt-get install --no-install-recommends -y xinetd python3 curl unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Install codeql
-RUN curl -L https://github.com/github/codeql-cli-binaries/releases/download/v2.20.5/codeql-linux64.zip -o codeql.zip && \
+RUN curl -L https://github.com/github/codeql-cli-binaries/releases/download/v2.21.1/codeql-linux64.zip -o codeql.zip && \
     unzip codeql.zip && \
     mv codeql /opt/codeql && \
     ln -s /opt/codeql/codeql /usr/local/bin/codeql && \

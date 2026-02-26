@@ -1,0 +1,32 @@
+name: thatotherthing
+author: vigna
+category: symbolic execution
+description: |-
+  A simple service that asks you for that other thing.
+  Your input is checked by a deliberately annoying validation function.
+  If correct, the service prints the contents of the flag file (/flag).
+
+  Given to players: a statically linked compiled binary (with symbols, no source).
+  Intended solve: use angr's symbolic execution engine to solve the validation function.
+value: 150
+
+image: .
+protocol: tcp
+host: null
+connection_info: null
+healthcheck: null
+
+flags:
+- ictf{YouGotThatOtherThingRight}
+
+files:
+- thatotherthing-bundle.tgz
+
+topics:
+- symbolic execution
+
+tags:
+- symbolic execution
+- angr
+
+version: '0.1'

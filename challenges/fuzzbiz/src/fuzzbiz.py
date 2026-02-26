@@ -1,5 +1,6 @@
 import sys
 import subprocess
+import os
 
 
 def main():
@@ -18,16 +19,28 @@ def main():
         sys.exit(1)
         
     try:
-        print("Enter your payload length:")
+        print("Enter your payload length:", flush=True)
+
         # Read the number of bytes to consume
         num_bytes = int(sys.stdin.readline().strip())
         
-        print("Enter your payload:")
+        print("Enter your payload:", flush=True)
         # Read exactly num_bytes from stdin
-        payload = sys.stdin.read(num_bytes)
+        payload = sys.stdin.buffer.read(num_bytes)
 
-        # Execute the vulnerable program with the payload
-        process = subprocess.run([sys.argv[2], payload], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(
+            [sys.argv[2]],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+
+        stdout, stderr = process.communicate(input=payload)
+
+        if stdout:
+            sys.stdout.write(stdout.decode(errors="ignore"))
+        if stderr:
+            sys.stderr.write(stderr.decode(errors="ignore"))
 
         # Check if the process crashed (non-zero exit or segmentation fault)
         if process.returncode not in (0, 1):  # Crashes typically have return codes > 1

@@ -1,4 +1,4 @@
-# fuzzbiz
+# fuzzbiz0
 
 Crash the program and get the flag.
 

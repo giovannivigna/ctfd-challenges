@@ -1,20 +1,19 @@
 name: fuzzbiz3
 author: zanardi
 category: fuzzing
-description: |-
-  Convince the service to send you the contents of the flag file (/flag).
+description: Convince the service to send you the contents of the flag file (/flag).
 value: 100
 
 image: .
 protocol: tcp
 host: null
-connection_info: null
+connection_info: nc 0.cloud.chals.io 12625
 healthcheck: null
 
 flags:
 - ictf{MericaFuzzyLoop}
 
-files:
+files: null
 
 topics:
 - fuzzing

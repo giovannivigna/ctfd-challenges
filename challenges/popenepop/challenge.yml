@@ -9,7 +9,7 @@ value: 100
 image: .
 protocol: tcp
 host: null
-connection_info: null
+connection_info: nc 0.cloud.chals.io 13689
 healthcheck: null
 
 flags:

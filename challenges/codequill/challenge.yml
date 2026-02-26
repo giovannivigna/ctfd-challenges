@@ -15,6 +15,7 @@ flags:
 - ictf{StaticIsAlwaysCool}
 
 files:
+- codequill-bundle.tgz
 
 topics:
 - static analysis

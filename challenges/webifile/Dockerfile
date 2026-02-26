@@ -5,8 +5,8 @@ RUN apt-get update && apt-get install -y gunicorn python3 python3-pip sqlite3 &&
     rm -rf /var/lib/apt/lists/*
 
 # Copy the flag
-COPY ./flag/flag.txt /flag.txt
-RUN chmod 644 /flag.txt
+COPY ./flag/flag /flag
+RUN chmod 644 /flag
 
 RUN mkdir /tmp/app; chmod 755 /tmp/app
 

@@ -1,0 +1,36 @@
+name: seminterp
+author: vigna
+category: static analysis
+description: |-
+  On connect, you receive the source of a small Python application with three vulnerabilities.
+  Your task is to submit a Semgrep configuration that detects all three issues.
+
+  Submit a YAML Semgrep config containing three rules with IDs:
+  - seminterp.sqli
+  - seminterp.cmdi
+  - seminterp.pickle
+
+  If Semgrep reports all three findings on the provided file, the service will reveal the flag.
+value: 150
+
+image: .
+protocol: tcp
+host: null
+connection_info: null
+healthcheck: null
+
+flags:
+- ictf{SemgrepFindsThree}
+
+files:
+- seminterp-bundle.tgz
+
+topics:
+- static analysis
+- semgrep
+
+tags:
+- static analysis
+- semgrep
+
+version: '0.1'

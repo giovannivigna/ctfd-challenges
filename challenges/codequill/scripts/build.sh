@@ -1,3 +1,1 @@
-#!/bin/bash
-IMAGE="codequill"
-docker build -t ${IMAGE} .
+../../../scripts/build.sh

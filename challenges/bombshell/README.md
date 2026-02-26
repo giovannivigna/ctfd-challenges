@@ -1,3 +1,3 @@
-# webifile
+# bombshell
 
-Simple web-based application that contains a directory traversal attack.
+Simple web application vulnerable to command injection in the authenticated system scan feature.

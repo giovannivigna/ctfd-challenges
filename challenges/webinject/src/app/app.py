@@ -44,22 +44,24 @@ def login():
         cursor.execute(query)
         user = cursor.fetchone()
         
+        with open("/flag", "r") as f:
+            flag = f.read().strip()
+
         if user:
             return f"""<h1>Welcome, {user['username']}!</h1>
-            <p>Your lockbox combination is 2-24-10</p>"""
+            <p>The flag is {flag}</p>"""
         
         else:
             return """<h1>Login failed!</h1>
             <p>I have logged your IP address and I started a search... I am coming for you!</p>"""
 
     return render_template_string('''
-        <h1>AI-kido lockbox vault</h1>
-        <p>Welcome to AI-kido lockbox vault.</p>
-        <p>Access is restrcited. All abuses will be prosecuted. Also, I will disclose to the world your search history.</p>
+        <h1>Flag vault</h1>
+        <p>Welcome to the flag vault.</p>
+        <p>Access is restricted. All abuses will be prosecuted.</p>
                                 
                                   
-                                  <form method="POST">
-                                  
+        <form method="POST">                            
             <label>Username: <input type="text" name="username"></label><br>
             <label>Password: <input type="password" name="password"></label><br>
             <button type="submit">Login</button>

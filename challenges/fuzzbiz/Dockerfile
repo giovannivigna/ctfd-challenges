@@ -34,5 +34,5 @@ RUN chmod 755 /home/challenge/ro/service.sh
 RUN cp xinetd.conf /etc/xinetd.d/fuzzbiz
 
 # The port this leaves on
-EXPOSE 7766
+EXPOSE 65005
 CMD ["/usr/sbin/xinetd", "-dontfork"]

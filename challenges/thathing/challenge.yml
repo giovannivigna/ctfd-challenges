@@ -1,0 +1,30 @@
+name: thathing
+author: vigna
+category: symbolic execution
+description: |-
+  A simple service that asks you for that thing.
+  Your input is checked by a deliberately annoying validation function.
+  If correct, the service prints the contents of the flag file (/flag).
+
+  Intended solve: use the KLEE symbolic execution engine on the provided source.
+value: 100
+
+image: .
+protocol: tcp
+host: null
+connection_info: null
+healthcheck: null
+
+flags:
+- ictf{YouGotThatThingRight}
+
+files:
+- thathing-bundle.tgz
+
+topics:
+- symbolic execution
+
+tags:
+- symbolic execution
+
+version: '0.1'

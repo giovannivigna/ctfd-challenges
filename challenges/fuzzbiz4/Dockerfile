@@ -31,7 +31,7 @@ RUN cp service.sh /home/challenge/ro/service.sh
 RUN chmod 755 /home/challenge/ro/service.sh
 
 # Install the service
-RUN cp xinetd.conf /etc/xinetd.d/fuzzbiz
+RUN cp xinetd.conf /etc/xinetd.d/fuzzbiz4
 
 # The port this leaves on
 EXPOSE 65004

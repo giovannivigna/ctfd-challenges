@@ -1,3 +1,1 @@
-#!/bin/bash
-IMAGE="bombshell"
-docker build -t ${IMAGE} .
+../../../scripts/build.sh

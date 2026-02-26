@@ -2,10 +2,10 @@
 # other tools to install and deploy your challenge.
 
 # Required sections
-name: "webifile"
+name: "webinject"
 author: "zanardi"
 category: web
-description: "Find the flag. It's 'documented'!"
+description: "Access is restricted. All abuses will be prosecuted."
 value: 100
 type: standard
 
@@ -58,7 +58,7 @@ healthcheck: null
 # Accepts strings or dictionaries of CTFd API data
 flags:
     # A static case sensitive flag
-    - ictf{TraverseToTheFlag}
+    - ictf{AClassicInjection}
     # A static case sensitive flag created with a dictionary
     #- {
     #    type: "static",
