@@ -11,9 +11,9 @@ RULE_PATH = Path("/home/challenge/rw/rule.yml")
 
 # Stable line numbers in ro/vuln_app.py
 EXPECTED = {
-    "seminterp.sqli": 9,
-    "seminterp.cmdi": 16,
-    "seminterp.pickle": 21,
+    "seminterp.sqli": 541,
+    "seminterp.cmdi": 490,
+    "seminterp.pickle": 509,
 }
 
 MAX_RULE_BYTES = 128 * 1024

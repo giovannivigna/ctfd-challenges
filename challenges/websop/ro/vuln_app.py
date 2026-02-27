@@ -4,8 +4,7 @@ A tiny "internal portal" used for demos.
 This file is intentionally self-contained: it includes configuration, a small
 SQLite-backed user store, authentication helpers, and a basic request router.
 
-Note: the challenge service never executes this file; it only provides it to
-participants for static analysis.
+Note: this file is provided to participants for analysis.
 """
 
 from __future__ import annotations
@@ -726,3 +725,4 @@ def _demo() -> None:
 
 if __name__ == "__main__":
     _demo()
+

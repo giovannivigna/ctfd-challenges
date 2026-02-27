@@ -1,0 +1,30 @@
+name: websop
+author: vigna
+category: web
+description: |-
+  A tiny "internal portal" is now running in production.
+  You have the source code: find a way to extract the flag.
+value: 150
+
+image: .
+protocol: http
+host: null
+connection_info: null
+healthcheck: null
+
+flags:
+- ictf{PicklePortalSOP}
+
+files:
+- websop-bundle.tgz
+
+topics:
+- web
+- python
+
+tags:
+- web
+- python
+
+version: '0.1'
+
