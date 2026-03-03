@@ -1,14 +1,13 @@
 name: codequill
 author: zanardi
 category: static analysis
-description: |-
-  Provide the right CodeQL query to obtain the flag.
+description: Provide the right CodeQL query to obtain the flag.
 value: 100
 
 image: .
 protocol: tcp
 host: null
-connection_info: null
+connection_info: nc 0.cloud.chals.io 11650
 healthcheck: null
 
 flags:

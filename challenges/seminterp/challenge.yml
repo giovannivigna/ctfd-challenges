@@ -11,7 +11,7 @@ description: |-
   - seminterp.pickle
 
   If Semgrep reports all three findings on the provided file, the service will reveal the flag.
-value: 150
+value: 100
 
 image: .
 protocol: tcp
@@ -22,8 +22,7 @@ healthcheck: null
 flags:
 - ictf{SemgrepFindsThree}
 
-files:
-- seminterp-bundle.tgz
+files: null
 
 topics:
 - static analysis
@@ -31,6 +30,5 @@ topics:
 
 tags:
 - static analysis
-- semgrep
 
 version: '0.1'
