@@ -2,7 +2,7 @@ name: codequill
 author: zanardi
 category: static analysis
 description: |-
-  Convince the service to send you the contents of the flag file (/flag).
+  Provide the right CodeQL query to obtain the flag.
 value: 100
 
 image: .
@@ -14,8 +14,7 @@ healthcheck: null
 flags:
 - ictf{StaticIsAlwaysCool}
 
-files:
-- codequill-bundle.tgz
+files: null
 
 topics:
 - static analysis

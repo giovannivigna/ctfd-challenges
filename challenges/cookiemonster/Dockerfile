@@ -28,7 +28,7 @@ RUN chmod 755 /home/challenge/rw
 
 # Creates the application
 WORKDIR /home/challenge/src
-RUN make
+RUN make clean && make
 RUN cp cookiemonster /home/challenge/ro/cookiemonster
 RUN chmod 755 /home/challenge/ro/cookiemonster
 RUN cp service.sh /home/challenge/ro/service.sh

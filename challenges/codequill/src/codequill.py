@@ -79,6 +79,10 @@ def verify_result(query, result):
     if "select" not in query.lower():
         print("Incorrect: Query does not contain 'select'")
         return False
+    
+    if "exists" not in query.lower():
+        print("Incorrect: Query does not contain 'exists'")
+        return False
 
     if "anotherFunction" in result:
         return True
@@ -92,11 +96,6 @@ def main():
 
     c_program = read_c_file(args.c_file)
 
-    print(f"My user ID is: {os.getuid()}")
-    print(f"My environment is:")
-    for key, value in os.environ.items():
-        print(f'{key}={value}')
-    
     # Makes sure that the home dir is /home/challenge
     os.environ['HOME'] = '/home/challenge'
     os.environ['USER'] = 'challenge'

@@ -16,7 +16,7 @@ The binary is compiled without PIE, so the address of `give_shell()` is fixed. W
 ## Steps
 
 1. Send `-1` to exit the "inspect" loop.
-2. Send a name payload: `A * 16 + p64(give_shell)`.
+2. Send a name payload that overwrites saved RIP with `give_shell()`.
 3. In the resulting shell: `cat /flag`.
 
 ## Exploit

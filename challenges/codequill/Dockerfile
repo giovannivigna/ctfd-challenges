@@ -6,7 +6,7 @@ RUN apt-get update -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install codeql
-RUN curl -L https://github.com/github/codeql-cli-binaries/releases/download/v2.21.1/codeql-linux64.zip -o codeql.zip && \
+RUN curl -L https://github.com/github/codeql-cli-binaries/releases/download/v2.24.2/codeql-linux64.zip -o codeql.zip && \
     unzip codeql.zip && \
     mv codeql /opt/codeql && \
     ln -s /opt/codeql/codeql /usr/local/bin/codeql && \

@@ -1,4 +1,4 @@
 name: codequill-queries
 version: 0.0.1
 dependencies:
-    codeql/cpp-all: "*"
+    codeql/cpp-all: 7.1.1

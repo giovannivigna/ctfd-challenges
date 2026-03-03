@@ -4,14 +4,15 @@
 
 void give_shell() {
   char *argv[2] = {"/bin/sh", NULL};
-  execve("/bin/sh", argv, NULL);
+  char *envp[1] = {NULL};
+  execve("/bin/sh", argv, envp);
 }
 
 int main() {
+  char buf[8];
   size_t values[8] = {0x59, 0x147, 0x964, 0x82,
                       0x58, 0x753, 0x234, 0x21};
   int index;
-  char buf[8];
 
   puts("I am a connoisseur of fine values.");
   puts("I have some values for your inspection . . .");

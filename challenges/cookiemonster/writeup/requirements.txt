@@ -1,2 +1,2 @@
-pwntools
+# No third-party Python dependencies required.
 

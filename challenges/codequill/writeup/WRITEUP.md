@@ -6,31 +6,29 @@ Submit a CodeQL query that makes the service print the flag from `/flag`.
 
 ## Observations
 
-The service:
+The target program defines two functions besides `main`:
 
-- Prints the provided C program.
-- Accepts a CodeQL query terminated by a line containing `DONE`.
-- Runs the query and decodes results to CSV.
-- Checks the CSV output with a very small validator:
-  - If the output contains `targetFunction`, it fails.
-  - If the output contains `anotherFunction`, it succeeds.
-  - It also checks that the query text contains `from`, `where`, and `select`.
+- `targetFunction(...)`, which is called from `main`.
+- `anotherFunction(int)`, which is never called.
 
-Crucially, it **does not actually verify** that the returned function is “never called”; it only checks for the presence of the string `anotherFunction` in the decoded output.
+So the correct answer is to write a CodeQL query that finds **functions with no call sites**.
 
 ## Exploit
 
-Return `anotherFunction` directly by selecting the function by name. For example:
+Select a function that is **never the target of any `FunctionCall`** (and exclude `main` to avoid returning it as “never called” as well). For example:
 
 ```ql
 import cpp
 
 from Function f
-where f.getName() = "anotherFunction"
+where
+  f.hasDefinition() and
+  f.getName() != "main" and
+  not exists(FunctionCall fc | fc.getTarget() = f)
 select f, f.getName()
 ```
 
-This makes the decoded CSV include `anotherFunction`, passes the validator, and the service prints the flag.
+On the provided program, the only such function is `anotherFunction`, so it appears in the decoded results and the service prints the flag.
 
 ## Steps
 
