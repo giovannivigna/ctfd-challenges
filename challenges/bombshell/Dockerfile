@@ -6,7 +6,10 @@ RUN apt-get update && apt-get install -y gunicorn python3 python3-pip sqlite3 ip
 
 # Copy the flag
 COPY ./flag/flag /flag
-RUN chmod 644 /flag
+RUN chmod 444 /flag
+
+# Create non-root user (limits command injection to read-only operations on /flag)
+RUN useradd -m -s /bin/bash ctf
 
 RUN mkdir /tmp/app; chmod 755 /tmp/app
 
@@ -25,6 +28,11 @@ EXPOSE 12721
 # Copy a script to initialize the database and start MySQL
 COPY src/serve.sh /usr/src/app
 RUN chmod +x /usr/src/app/serve.sh
+
+# Give ctf user ownership of app dir (needed for SQLite database)
+RUN chown -R ctf:ctf /usr/src/app
+
+USER ctf
 
 # Start gunicorn and the Flask app
 CMD ["./serve.sh"]
