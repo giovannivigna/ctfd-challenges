@@ -1,3 +1,1 @@
-#!/bin/bash
-IMAGE="doomtemple"
-docker build -t ${IMAGE} .
+../../../scripts/build.sh

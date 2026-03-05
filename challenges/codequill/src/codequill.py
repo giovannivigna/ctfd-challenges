@@ -1,6 +1,8 @@
 import subprocess
 import argparse
 import os
+import shutil
+import tempfile
 
 FLAG_PATH = "/flag"
 WRITE_DIR = "../rw/"
@@ -13,26 +15,47 @@ def get_flag():
 
 def run_codeql_query(query, codeql_db_path):
     os.chdir(WRITE_DIR)
-    
-    query_file = "query.ql"
+    rw_dir = os.path.abspath(".")
 
-    with open(query_file, "w") as f:
-        f.write(query)
+    # Resolve database path (may be relative to rw)
+    db_abs_path = os.path.abspath(codeql_db_path)
 
-    result_file = "result.bqrs"
-    
-    subprocess.run([
-        "codeql", "query", "run", query_file,
-        "--database", codeql_db_path,
-        "--output", result_file
-    ], check=True)
+    # Copy database to a unique temp dir to avoid IMB cache lock conflicts
+    # when multiple connections run CodeQL concurrently (OverlappingFileLockException)
+    temp_db_dir = tempfile.mkdtemp(prefix="codequill-db-", dir=rw_dir)
+    try:
+        for item in os.listdir(db_abs_path):
+            src_item = os.path.join(db_abs_path, item)
+            dst_item = os.path.join(temp_db_dir, item)
+            if os.path.isdir(src_item):
+                shutil.copytree(src_item, dst_item)
+            else:
+                shutil.copy2(src_item, dst_item)
+    except Exception:
+        shutil.rmtree(temp_db_dir, ignore_errors=True)
+        raise
 
-    # Decode the result to CSV so we can check it
-    output = subprocess.check_output([
-        "codeql", "bqrs", "decode", "--format=csv", result_file
-    ])
+    try:
+        query_file = os.path.join(temp_db_dir, "query.ql")
+        with open(query_file, "w") as f:
+            f.write(query)
 
-    return output.decode()
+        result_file = os.path.join(temp_db_dir, "result.bqrs")
+
+        subprocess.run([
+            "codeql", "query", "run", query_file,
+            "--database", temp_db_dir,
+            "--output", result_file
+        ], check=True)
+
+        # Decode the result to CSV so we can check it
+        output = subprocess.check_output([
+            "codeql", "bqrs", "decode", "--format=csv", result_file
+        ])
+
+        return output.decode()
+    finally:
+        shutil.rmtree(temp_db_dir, ignore_errors=True)
 
 def read_c_file(c_file_path):
     with open(c_file_path, 'r') as f:

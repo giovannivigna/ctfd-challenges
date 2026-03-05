@@ -88,7 +88,6 @@ def feedback():
             conn.execute("INSERT INTO feedback (username, message) VALUES (?, ?)", (username, message))
             conn.commit()
 
-        # 🚨 Vulnerable: Directly injecting user input into a template
         return render_template_string(f"<h1>Thank you, {username}!</h1><p>Your feedback: {message}</p>")
 
     return render_template("feedback.html")

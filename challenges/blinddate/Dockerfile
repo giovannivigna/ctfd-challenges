@@ -11,7 +11,7 @@ WORKDIR /usr/src/app
 COPY ./src/app .
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python3 -m pip install --no-cache-dir --break-system-packages -r requirements.txt
 
 # Create the database
 RUN python3 database.py
