@@ -4,9 +4,12 @@ FROM ubuntu:22.04
 RUN apt-get update && apt-get install -y gunicorn python3 python3-pip sqlite3 && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy the flag
+# Copy the flag (readable by all, writable only by root)
 COPY ./flag/flag /flag
 RUN chmod 644 /flag
+
+# Create non-root user for running the app
+RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 RUN mkdir /tmp/app; chmod 755 /tmp/app
 
@@ -25,6 +28,12 @@ EXPOSE 5544
 # Copy a script to initialize the database and start MySQL
 COPY src/serve.sh /usr/src/app
 RUN chmod +x /usr/src/app/serve.sh
+
+# Own app files by non-root user (app can read flag via 644, but not modify it)
+RUN chown -R appuser:appuser /usr/src/app
+
+# Run as non-root user
+USER appuser
 
 # Start gunicorn and the Flask app
 CMD ["./serve.sh"]

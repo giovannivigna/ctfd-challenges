@@ -4,8 +4,9 @@ RUN apt-get update -y \
     && apt-get install --no-install-recommends -y xinetd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+# Flag: readable by all, writable only by root (service runs as challenge user, can read but not modify)
 COPY ./flag/flag /flag
-RUN chmod 644 /flag
+RUN chown root:root /flag && chmod 444 /flag
 
 RUN useradd -u 31337 -ms /bin/bash challenge
 # Prevents the user from writing to the home directory

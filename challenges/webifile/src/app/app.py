@@ -1,7 +1,7 @@
 import logging
 from pprint import pprint
 import base64
-from flask import Flask, request, jsonify, session, render_template
+from flask import Flask, request, jsonify, session, render_template, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
@@ -39,60 +39,75 @@ def index():
 def register():
     try:
         if request.method == 'GET':
-            return render_template('register.html')
+            return render_template('register.html', error=request.args.get('error'))
         elif request.method == 'POST':
-            data = request.get_json()
-            
-            # Validate input
-            username = data.get('username')
-            password = data.get('password')
-            
+            # Support both JSON (AJAX) and form data (traditional submit)
+            if request.is_json:
+                data = request.get_json(silent=True) or {}
+                username = data.get('username')
+                password = data.get('password')
+            else:
+                username = request.form.get('username')
+                password = request.form.get('password')
+
             if not username or not password:
-                return jsonify({"message": "Username and password are required"}), 400
+                if request.is_json:
+                    return jsonify({"message": "Username and password are required"}), 400
+                return redirect(url_for('register', error="Username and password are required"))
 
-            # Check if the user already exists
             existing_user = User.query.filter_by(username=username).first()
-
             if existing_user:
-                return jsonify({"message": "Username already exists"}), 400
+                if request.is_json:
+                    return jsonify({"message": "Username already exists"}), 400
+                return redirect(url_for('register', error="Username already exists"))
 
-            # Hash the password
             hashed_password = generate_password_hash(password, method='sha256')
-
-            # Create a new user and add to database
             new_user = User(username=username, password=hashed_password)
-            
             db.session.add(new_user)
             db.session.commit()
 
-            return jsonify({"message": "User registered successfully"}), 201
+            if request.is_json:
+                return jsonify({"success": True, "message": "User registered successfully"}), 201
+            return redirect(url_for('login'))
 
     except Exception as e:
         pprint(e)
-        return jsonify({"message": str(e)}), 500
+        if request.is_json:
+            return jsonify({"message": str(e)}), 500
+        return redirect(url_for('register', error="Registration failed"))
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     try:
         if request.method == 'GET':
-            return render_template('login.html')
+            return render_template('login.html', error=request.args.get('error'))
         elif request.method == 'POST':
-            data = request.get_json()
-            username = data.get('username')
-            password = data.get('password')
-            
+            if request.is_json:
+                data = request.get_json(silent=True) or {}
+                username = data.get('username')
+                password = data.get('password')
+            else:
+                username = request.form.get('username')
+                password = request.form.get('password')
+
             user = User.query.filter_by(username=username).first()
-            
+
             if not user or not check_password_hash(user.password, password):
-                return jsonify({"message": "Invalid username or password"}), 401
-                
+                if request.is_json:
+                    return jsonify({"message": "Invalid username or password"}), 401
+                return redirect(url_for('login', error="Invalid username or password"))
+
             login_user(user)
-            
-            return jsonify({"message": "Authenticated successfully"}), 200
+
+            if request.is_json:
+                return jsonify({"success": True, "message": "Authenticated successfully"}), 200
+            return redirect(url_for('index'))
     except Exception as e:
         pprint(e)
-        return jsonify({"message": str(e)}), 500
+        if request.is_json:
+            return jsonify({"message": str(e)}), 500
+        return redirect(url_for('login', error="Login failed"))
 
 
 @app.route('/documents', methods=['GET'])
@@ -207,11 +222,15 @@ def logout():
         if request.method == 'GET':
             return render_template('logout.html')
         elif request.method == 'POST':
-            logout_user()  # Ends the user session
-            return jsonify({"message": "Logged out successfully"}), 200
+            logout_user()
+            if request.is_json:
+                return jsonify({"success": True, "message": "Logged out successfully"}), 200
+            return redirect(url_for('index'))
     except Exception as e:
         pprint(e)
-        return jsonify({"message": str(e)}), 500
+        if request.is_json:
+            return jsonify({"message": str(e)}), 500
+        return redirect(url_for('index'))
 
 
 if __name__ == '__main__':

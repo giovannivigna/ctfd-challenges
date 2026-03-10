@@ -9,11 +9,11 @@ value: 100
 image: .
 protocol: tcp
 host: null
-connection_info: nc 0.cloud.chals.io 13689
+connection_info: nc 0.cloud.chals.io 33812
 healthcheck: null
 
 flags:
-- ictf{MindWhatYouPopen}
+- ictf{MindWhatYouPopenInTmp}
 
 files:
 - popenepop-bundle.tgz
